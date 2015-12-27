@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Language>
+    <Type>Component</Type>
+    <Name>Authentication</Name>
+    <Code>en-US</Code>
+    <Date>2015-08-7</Date>
+    <Author>David Lavieri</Author>
+    <AuthorEmail>daviddlavier@gmail.com</AuthorEmail>
+
+    <Strings>
+        <String key="COM_LOGIN-TITLE">Sign In</String>
+        <String key="COM_LOGIN-EMAIL">Email</String>
+        <String key="COM_LOGIN-USERNAME">Username</String>
+        <String key="COM_LOGIN-PASSWORD">Password</String>
+        <String key="COM_LOGIN-FAILED">Authentication Failed</String>
+    </Strings>
+
+
+</Language>

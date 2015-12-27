@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Language>
+    <Type>Library</Type>
+    <Name>Epsilon</Name>
+    <Code>en-LA</Code>
+    <Date>2015-11-05</Date>
+    <Author>David Lavieri</Author>
+    <AuthorEmail>daviddlavier@gmail.com</AuthorEmail>
+
+    <Strings>
+        <String key="SEND">Enviar</String>
+        <String key="VIEW">Ver</String>
+        <String key="EDIT">Editar</String>
+        <String key="NEW">Nuevo</String>
+        <String key="SAVE">Guardar</String>
+        <String key="DELETE">Eliminar</String>
+        <String key="BACKWARD">Atras</String>
+        <String key="PREVIEW">Vista Previa</String>
+        <String key="IS_MANDATORY">es obligatorio</String>
+        <String key="SELECT...">Seleccione...</String>
+
+        <String key="RDATE">F. Registro</String>
+        <String key="SDATE">F. Inicio</String>
+        <String key="EDATE">F. Vencimiento</String>
+
+        <String key="AVAILABLE?">¿Disponible?</String>
+        <String key="AVAILABLE-0">No</String>
+        <String key="AVAILABLE-1">Si</String>
+
+        <String key="TABLE-NO_ROW_FOUND">Ningun registro encontrado</String>
+        <String key="TABLE-SHOWING">Mostrando</String>
+        <String key="TABLE-OF">de</String>
+        <String key="TABLE-RESULTS">Resultados</String>
+        <String key="TABLE-PAGES">Páginas</String>
+        <String key="OPTIONS">Opciones</String>
+        <String key="STATUS">Status</String>
+        <String key="STATUS-0">Inactivo</String>
+        <String key="STATUS-1">Activo</String>
+
+        <String key="NOT_AUTHORIZED">No esta Autorizado</String>
+    </Strings>
+
+
+</Language>
