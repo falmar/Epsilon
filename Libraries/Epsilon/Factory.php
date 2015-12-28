@@ -28,7 +28,6 @@ use Epsilon\Template\Template;
 use Epsilon\Document\Document;
 use Epsilon\User\User;
 use PDO;
-use ReCaptcha\ReCaptcha;
 
 /**
  * Class Factory
@@ -44,8 +43,6 @@ class Factory
     private static $Session;
     private static $DatabaseHandler;
     private static $EventManager;
-    private static $reCaptcha;
-    private static $PHPMailer;
 
     /**
      * @param $ApplicationID
@@ -196,29 +193,5 @@ class Factory
         }
 
         return self::$EventManager;
-    }
-
-    /**
-     * @return \PHPMailer
-     */
-    public static function getPHPMailer()
-    {
-        if (!isset(self::$PHPMailer)) {
-            self::$PHPMailer = new \PHPMailer();
-        }
-
-        return self::$PHPMailer;
-    }
-
-    /**
-     * @return ReCaptcha
-     */
-    public static function getReCaptcha()
-    {
-        if (!isset(self::$reCaptcha)) {
-            self::$reCaptcha = new ReCaptcha(eConfig::CAPTCHA_SECRET_KEY);
-        }
-
-        return self::$reCaptcha;
     }
 }

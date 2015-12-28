@@ -10,7 +10,7 @@
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
-namespace Epsilon\Input;
+namespace Epsilon\IO;
 
 defined("EPSILON_EXEC") or die();
 
@@ -21,16 +21,19 @@ defined("EPSILON_EXEC") or die();
  */
 class Input
 {
-    const GET             = 1;
-    const POST            = 2;
-    const REQUEST         = 3;
-    const HTML            = 1;
-    const HTML_NO_SLASHES = 2;
-    const SLASHES         = 3;
-    const FLOAT           = 4;
-    const INT             = 5;
-    const NONE            = 6;
-    const DATE            = 7;
+    const GET          = 1;
+    const POST         = 2;
+    const REQUEST      = 3;
+    const HTML         = 1;
+    const HTML_SLASHES = 2;
+    const SLASHES      = 3;
+    const FLOAT        = 4;
+    const INT          = 5;
+    const NONE         = 6;
+    const DATE         = 7;
+    const JSON         = 8;
+    const BOOL         = 9;
+    const UTF8         = 10;
 
     /**
      * Read Variables from $_POST, $_GET or $_REQUEST Global Variables
@@ -38,20 +41,18 @@ class Input
      * If the Variable seems to be an array will clean all the values of the array as well
      *
      * @param string $key
-     * @param string $HTTP_Method
-     * @param string $ClearingMethod
-     * @param        array
+     * @param int    $HTTP_Method
+     * @param int    $ClearingMethod
+     * @param array  $ClearArrayKeys
      * @return mixed|null
      */
     public static function getVar($key, $HTTP_Method = null, $ClearingMethod = null, $ClearArrayKeys = [])
     {
-        switch (strtoupper($HTTP_Method)) {
+        switch ($HTTP_Method) {
             case self::GET:
-            case "GET":
                 $RequestMethod = &$_GET;
                 break;
             case self::POST:
-            case "POST":
                 $RequestMethod = &$_POST;
                 break;
             case self::REQUEST:
@@ -70,8 +71,8 @@ class Input
     /**
      * Clean an Variable or Array Values
      *
-     * @param       $Var
-     * @param       $ClearingMethod
+     * @param mixed $Var
+     * @param int   $ClearingMethod
      * @param array $ClearArrayKeys
      * @return mixed
      */
@@ -93,37 +94,53 @@ class Input
     }
 
     /**
+     * cleanVar method alias
+     *
+     * @param mixed $Var
+     * @param int   $ClearingMethod
+     * @param array $ClearArrayKeys
+     * @return mixed
+     */
+    public static function _($Var, $ClearingMethod = null, $ClearArrayKeys = [])
+    {
+        return self::cleanVar($Var, $ClearingMethod, $ClearArrayKeys);
+    }
+
+    /**
      * @param $Value
      * @param $ClearingMethod
      */
-    public static function cleanValueByType(&$Value, $ClearingMethod)
+    private static function cleanValueByType(&$Value, $ClearingMethod)
     {
-        switch (strtolower($ClearingMethod)) {
+        switch ($ClearingMethod) {
             case self::HTML:
-            case 'html':
-                $Value = htmlentities(addslashes($Value), ENT_QUOTES);
-                break;
-            case self::HTML_NO_SLASHES:
-            case 'html_nosls':
                 $Value = htmlentities($Value, ENT_QUOTES);
                 break;
+            case self::HTML_SLASHES:
+                $Value = htmlentities(addslashes($Value), ENT_QUOTES);
+                break;
+            case self::JSON:
+                $Value = json_decode($Value);
+                break;
+            case self::UTF8:
+                $Value = utf8_encode($Value);
+                break;
+            case self::DATE:
+                $Value = date("Y-m-d h:i:s", strtotime($Value));
+                break;
             case self::FLOAT:
-            case 'float':
                 $Value = floatval($Value);
                 break;
             case self::INT:
-            case 'int':
                 $Value = intval($Value);
                 break;
-            case self::DATE:
-            case "date":
-                $Value = date("Y-m-d h:i:s", strtotime($Value));
+            case self::BOOL:
+                $Value = boolval($Value);
                 break;
             case self::NONE:
-            case 'none':
                 break;
             default:
-                $Value = htmlentities(preg_replace('/[^A-Za-z0-9_\@\.\,\/\s\-\ñ\á\ó\é\ú\í]/', '', $Value), ENT_QUOTES);
+                $Value = preg_replace('/[^A-Za-z0-9_\!\?\=\* \&\@\:\(\)\\+\.\,\/\s\-]/', '', $Value);
                 break;
         }
     }

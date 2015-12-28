@@ -35,7 +35,6 @@ class DatabaseHandler extends PDO
      */
     public function __construct($strDSN, $User, $Password, $Options = [])
     {
-        Debug::setDebug(false);
         $this->PreparedQueries = 0;
         try {
             parent::__construct($strDSN, $User, $Password, $Options);
@@ -105,10 +104,5 @@ class DatabaseHandler extends PDO
     public function catchException(PDOException $exception, $SSQL = null)
     {
         Debug::catchException($exception, $SSQL);
-    }
-
-    public function __destruct()
-    {
-        Debug::writeLog();
     }
 }

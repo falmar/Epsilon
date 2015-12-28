@@ -15,7 +15,7 @@ namespace Epsilon\Template;
 defined("EPSILON_EXEC") or die();
 
 use Epsilon\Factory;
-use Epsilon\Input\Input;
+use Epsilon\IO\Input;
 use Epsilon\MVC\View;
 use Epsilon\Object\ActiveRecord;
 use Epsilon\User\SystemMessage;
@@ -343,7 +343,7 @@ abstract class Template extends ActiveRecord
 
             foreach ($Properties['Languages'] as $lg) {
 
-                if (isset($lg['default']) && (int)$lg['default'] === 1) {
+                if (isset($lg['default']) && $lg['default'] === 1) {
                     $Default = $lg;
                 } elseif (isset($lg['code']) && $lg['code'] == $Code) {
                     $Language = $lg;
@@ -360,9 +360,11 @@ abstract class Template extends ActiveRecord
             }
         }
 
+        $isArray = is_array($File);
+
         if ($Files) {
             foreach ($Files as $lang) {
-                if (is_array($File)) {
+                if ($isArray) {
                     foreach ($File as $f) {
                         if ($f == (string)$lang) {
                             $eLang->addFile((string)$lang, $this->getPath() . "Language" . DS);

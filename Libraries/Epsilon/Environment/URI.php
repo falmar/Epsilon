@@ -16,7 +16,7 @@ defined("EPSILON_EXEC") or die();
 
 use App\eConfig;
 use Epsilon\Factory;
-use Epsilon\Input\Input;
+use Epsilon\IO\Input;
 use Epsilon\Object\Object;
 
 /**
@@ -61,7 +61,7 @@ class URI extends Object
                 $https = "http://";
             }
 
-            if (!Factory::getApplication()->runningCLI()) {
+            if (!Factory::getApplication()->isCLI()) {
                 if ($_SERVER["PHP_SELF"] && isset($_SERVER["REQUEST_URI"])) {
                     $uri = $https . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
                 } else {

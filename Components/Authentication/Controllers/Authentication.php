@@ -15,7 +15,7 @@ namespace Components\Authentication\Controllers;
 defined("EPSILON_EXEC") or die();
 
 use Epsilon\Factory;
-use Epsilon\Input\Input;
+use Epsilon\IO\Input;
 use Epsilon\User\SystemMessage;
 
 /**

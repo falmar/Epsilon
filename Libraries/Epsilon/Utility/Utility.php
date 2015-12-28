@@ -16,7 +16,7 @@ defined("EPSILON_EXEC") or die();
 
 use App\eConfig;
 use Epsilon\Factory;
-use Epsilon\Input\Input;
+use Epsilon\IO\Input;
 use Epsilon\Object\Object;
 use PDO;
 use PDOException;

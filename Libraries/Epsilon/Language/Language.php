@@ -17,7 +17,8 @@ defined("EPSILON_EXEC") or die();
 use App\eConfig;
 use Epsilon\Database\DatabaseHandler;
 use Epsilon\Factory;
-use Epsilon\Input\Input;
+use Epsilon\IO\Input;
+use Epsilon\IO\Output;
 use Epsilon\Object\ActiveRecord;
 use PDO;
 use PDOException;
@@ -172,28 +173,23 @@ class Language extends ActiveRecord
     }
 
     /**
-     * @param     $Key
-     * @param int $ReturnType
-     * @param int $ENT_Option
+     * @param      $Key
+     * @param int  $ClearMethod
+     * @param bool $Output
      * @return bool|string
      */
-    public function _($Key, $ReturnType = self::HTML_ENT, $ENT_Option = ENT_QUOTES)
+    public function _($Key, $ClearMethod = Input::HTML, $Output = false)
     {
         if (array_key_exists($Key, $this->arStrings)) {
-            switch ($ReturnType) {
-                case self::UTF8_DECODE:
-                    return utf8_decode($this->arStrings[$Key]);
-                    break;
-                case self::HTML_ENT:
-                    return htmlentities($this->arStrings[$Key], $ENT_Option, ini_get("default_charset"));
-                    break;
-                default:
-                    return $this->arStrings[$Key];
-                    break;
+            if ($Output) {
+                $String = Output::_($this->arStrings[$Key], $ClearMethod);
+            } else {
+                $String = Input::_($this->arStrings[$Key], $ClearMethod);
             }
 
+            return $String;
         } else {
-            return false;
+            return null;
         }
     }
 
@@ -253,7 +249,7 @@ class Language extends ActiveRecord
 
     protected function setInSession()
     {
-        if (eConfig::LOCALHOST) {
+        if (!eConfig::APP_DEBUG) {
             $Language                    = [];
             $Language["arImportedFiles"] = $this->arImportedFiles;
             $Language["arStrings"]       = $this->arStrings;

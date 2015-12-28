@@ -101,8 +101,6 @@ abstract class Application extends Object
 
     /**
      * Initialize the Application
-     * Set the Smarty->TemplateDir attribute to an empty array
-     * Set the Variable SystemMessages to the smarty template as an empty array
      * Initialize the Document
      * Load the Component and execute it
      * Load the Modules if there's not an XML HTTP Request
@@ -119,7 +117,7 @@ abstract class Application extends Object
     }
 
     /**
-     * Call the Method Document->Render();
+     * Call the method Document->render();
      */
     public function render()
     {
@@ -127,9 +125,9 @@ abstract class Application extends Object
     }
 
     /**
-     * Return the string name of the Application
+     * Return the string of the Application ID
      *
-     * @return string
+*@return string
      */
     public function getApplicationID()
     {
@@ -162,9 +160,9 @@ abstract class Application extends Object
 
     /**
      * Redirect the Application
-     * Calls the getURL Method from the Router Object
+     * Calls the Router::getURL() method
      *
-     * @param       $URL
+     * @param             $URL
      * @param array $arQuery
      */
     public function redirect($URL, $arQuery = [])
@@ -189,7 +187,7 @@ abstract class Application extends Object
      *
      * @return bool
      */
-    public function runningCLI()
+    public function isCLI()
     {
         return $this->CLIMode;
     }

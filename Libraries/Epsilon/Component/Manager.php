@@ -83,7 +83,7 @@ class Manager extends Object
                     $Namespace = "\\Components\\" . $_Component . "\\Controllers\\";
 
                     /**
-                     * If the route contains a controller use that controller name
+                     * If the route contains a controller use that controller
                      * else
                      * use the component name as default controller
                      */
@@ -95,9 +95,13 @@ class Manager extends Object
 
                     $Class = $Namespace . $Controller;
 
+                    if (!class_exists($Class)) {
+                        throw new \Exception("Controller doesn't exist {$Controller}->{$Action}({$ID})");
+                    }
+
                     $Component = new $Class($dbh, $Component);
 
-                    /** Verify is the Method (Action) exist */
+                    /** Verify if the method (Action) exist */
                     if (is_callable([
                         $Component,
                         $Action

@@ -62,7 +62,7 @@ class Rule extends Object
     public function mergeIdentity($Identity, $Allow)
     {
         $Identity = (int)$Identity;
-        $Allow    = (int)((boolean)$Allow);
+        $Allow    = (int)($Allow);
 
         if (array_key_exists($Identity, $this->Identities)) {
             if ($this->Identities[$Identity] !== 0) {

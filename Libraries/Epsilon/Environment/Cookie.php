@@ -84,11 +84,12 @@ class Cookie extends Object
      */
     function get($Key)
     {
-        $value = null;
         if (array_key_exists($Key, $this->newCookies)) {
             $value = $this->newCookies[$Key]["value"];
         } elseif (array_key_exists($Key, $this->Cookies)) {
             $value = $this->Cookies[$Key];
+        } else {
+            $value = null;
         }
 
         return ($value) ? base64_decode($value) : null;

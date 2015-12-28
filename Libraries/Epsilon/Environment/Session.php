@@ -37,7 +37,6 @@ class Session
     private $SessionVariables;
     private $newSessionVariables;
     private $globalSessionVariables;
-
     private $blWritten;
 
     /**
@@ -93,12 +92,13 @@ class Session
         if (isset($_COOKIE["PHPSESSID"])) {
 
             $this->PHP_SessionID = $_COOKIE["PHPSESSID"];
-            $ssql                = "SELECT SessionID FROM Session
-				WHERE AsciiSessionID = :Ascii_ID
-				AND UserAgent = :UserAgent
-				AND (TIMESTAMPDIFF(SECOND,RegisteredDate,:now) < :Lifespan)
-				AND ((TIMESTAMPDIFF(SECOND,LastImpress,:now) < :Timeout) OR LastImpress IS NULL)";
-            $stmt                = $this->objPDO->prepare($ssql);
+
+            $ssql = "SELECT SessionID FROM Session
+                    WHERE AsciiSessionID = :Ascii_ID
+                    AND UserAgent = :UserAgent
+                    AND (TIMESTAMPDIFF(SECOND,RegisteredDate,:now) < :Lifespan)
+                    AND ((TIMESTAMPDIFF(SECOND,LastImpress,:now) < :Timeout) OR LastImpress IS NULL)";
+            $stmt = $this->objPDO->prepare($ssql);
             $stmt->bindValue(":Ascii_ID", $this->PHP_SessionID, PDO::PARAM_STR);
             $stmt->bindValue(":UserAgent", $this->UserAgent, PDO::PARAM_STR);
             $stmt->bindValue(":now", $this->getDateNOW(), PDO::PARAM_STR);
@@ -150,20 +150,15 @@ class Session
     {
 
         try {
-            $ssql = "SELECT SessionID,
-				  (SELECT IF(COUNT(sv.SessionVariableID)>0,1,0)
-				   FROM SessionVariable sv
-				   WHERE sv.AsciiSessionID = :Ascii_ID AND TIMESTAMPDIFF(SECOND,sv.Lifespan,:now)>0
-				   ) AS blTimeoutVariables
-				FROM Session WHERE AsciiSessionID = :Ascii_ID AND (RemoteIPv4 = :RemoteIPv4 OR RemoteIPv6 = :RemoteIPv6)";
+            $ssql = "SELECT SessionID
+                    FROM Session
+                    WHERE AsciiSessionID = :Ascii_ID AND (RemoteIPv4 = :RemoteIPv4 OR RemoteIPv6 = :RemoteIPv6)";
 
             $stmt = $this->objPDO->prepare($ssql);
             $stmt->bindValue(":Ascii_ID", $this->PHP_SessionID, PDO::PARAM_STR);
-            $stmt->bindValue(":now", $this->getDateNOW(), PDO::PARAM_STR);
             $stmt->bindValue(":RemoteIPv4", $this->RemoteIPv4, PDO::PARAM_STR);
             $stmt->bindValue(":RemoteIPv6", $this->RemoteIPv6, PDO::PARAM_STR);
             $stmt->bindColumn("SessionID", $this->SessionID, PDO::PARAM_INT);
-            $stmt->bindColumn(":blTimeoutVariables", $blTimeoutVariables, PDO::PARAM_STR);
             $stmt->execute();
             $stmt->fetch();
 
@@ -183,10 +178,8 @@ class Session
                 $this->PHP_SessionID = $PHP_SessionID;
             }
 
+            $this->timeOutVariables();
             $this->impress();
-            if ($blTimeoutVariables) {
-                $this->timeOutVariables();
-            }
         } catch (PDOException $e) {
             Factory::getDBH()->catchException($e);
         }
@@ -199,8 +192,8 @@ class Session
     private function destroySession()
     {
         try {
-            $ssql = "DELETE FROM Session WHERE AsciiSessionID = :Ascii_ID;
-					 DELETE FROM SessionVariable WHERE AsciiSessionID = :Ascii_ID;";
+            $ssql = "DELETE FROM SessionVariable WHERE AsciiSessionID = :Ascii_ID;
+                     DELETE FROM Session WHERE AsciiSessionID = :Ascii_ID;";
             $stmt = $this->objPDO->prepare($ssql);
             $stmt->bindValue(":Ascii_ID", $this->PHP_SessionID, PDO::PARAM_STR);
 
@@ -218,17 +211,17 @@ class Session
     private function timeOutVariables()
     {
         try {
-            $ssql = "DELETE FROM SessionVariable WHERE AsciiSessionID = :ascci_id AND TIMESTAMPDIFF(SECOND,Lifespan,:now)>0";
+            $ssql = "DELETE FROM SessionVariable WHERE AsciiSessionID = :Ascii_ID AND TIMESTAMPDIFF(SECOND,Lifespan,:Now)>0";
             $stmt = $this->objPDO->prepare($ssql);
-            $stmt->bindValue(":ascii_id", $this->PHP_SessionID, PDO::PARAM_STR);
-            $stmt->bindValue(":now", $this->getDateNOW(), PDO::PARAM_STR);
+            $stmt->bindValue(":Ascii_ID", $this->PHP_SessionID, PDO::PARAM_STR);
+            $stmt->bindValue(":Now", $this->getDateNOW(), PDO::PARAM_STR);
 
             return $stmt->execute();
         } catch (PDOException $e) {
             Factory::getDBH()->catchException($e);
-
-            return false;
         }
+
+        return false;
     }
 
     /**

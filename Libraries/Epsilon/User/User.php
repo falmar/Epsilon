@@ -137,7 +137,7 @@ class User extends ActiveRecord
      */
     public function isGuest()
     {
-        return (bool)$this->blGuest;
+        return $this->blGuest;
     }
 
     /**

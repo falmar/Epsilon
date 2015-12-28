@@ -31,7 +31,6 @@ class SystemMessage extends ActiveRecord
     const MSG_SUCCESS = "success";
     const MSG_WARNING = "warning";
     const MSG_ERROR   = "alert";
-
     protected static $arSystemMessages        = [];
     protected static $arSystemMessagesElement = [];
     protected static $blAssignedMessages      = false;
@@ -138,7 +137,6 @@ class SystemMessage extends ActiveRecord
      */
     public static function assignMessages($Element)
     {
-
         if (!isset(self::$arSystemMessagesElement[$Element])) {
             $dbh = Factory::getDBH();
 
@@ -152,18 +150,15 @@ class SystemMessage extends ActiveRecord
                 foreach ($stmt->fetchAll(PDO::FETCH_OBJ) as $Message) {
                     array_push(self::$arSystemMessages, new SystemMessage($dbh, $Message));
                 }
-
                 self::$arSystemMessagesElement[$Element] = true;
 
                 return true;
             } catch (PDOException $e) {
                 Factory::getDBH()->catchException($e, $stmt->queryString);
-
-                return false;
             }
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**

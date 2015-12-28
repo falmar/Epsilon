@@ -177,7 +177,6 @@ class Document extends Object
         }
     }
 
-
     /**
      * Count \Epsilon\MVC\View Objects
      *

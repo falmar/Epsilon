@@ -270,9 +270,7 @@ class Access extends Object
                     $dbh->catchException($e, $stmt->queryString);
                     $Groups = [$GuestUserGroup];
                 }
-
             }
-
             $this->arGroupsByUser[$storedID] = $Groups;
         }
 

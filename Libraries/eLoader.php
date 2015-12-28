@@ -14,46 +14,36 @@
 defined("EPSILON_EXEC") or die();
 
 /**
- * Class eLoader
+ * PSR-4 Auto loader
  */
-class eLoader
-{
-    /**
-     * @param            $Class
-     * @internal param null $ClassPath
-     * @internal param bool|false $Forced
-     */
-    public static function autoLoad($Class)
-    {
-        $slcPath = strtolower($Class);
-        $Path    = explode("\\", $Class);
-        $Class   = array_pop($Path);
 
-        if (strpos($slcPath, "component") === 0) {
-            array_shift($Path);
-            $ClassPath = COMPONENT_PATH;
-        } elseif (strpos($slcPath, "module") === 0) {
-            array_shift($Path);
-            $ClassPath = MODULE_PATH;
-        } elseif (strpos($slcPath, "template") === 0) {
-            array_shift($Path);
-            $ClassPath = TEMPLATE_PATH;
-        } elseif (strpos($slcPath, "app") === 0) {
-            $ClassPath = ROOT_PATH;
-        } else {
-            $ClassPath = LIBRARY_PATH;
-        }
+spl_autoload_register(function ($Class) {
+    $slcPath = strtolower($Class);
+    $Path    = explode("\\", $Class);
+    $Class   = array_pop($Path);
 
-        if ($Path) {
-            $Path = $ClassPath . implode(DS, $Path) . DS . $Class . ".php";
-        } else {
-            $Path = $ClassPath . $Class . ".php";
-        }
-
-        if (is_readable($Path)) {
-            require_once($Path);
-        }
+    if (strpos($slcPath, "component") === 0) {
+        array_shift($Path);
+        $ClassPath = COMPONENT_PATH;
+    } elseif (strpos($slcPath, "module") === 0) {
+        array_shift($Path);
+        $ClassPath = MODULE_PATH;
+    } elseif (strpos($slcPath, "template") === 0) {
+        array_shift($Path);
+        $ClassPath = TEMPLATE_PATH;
+    } elseif (strpos($slcPath, "app") === 0) {
+        $ClassPath = ROOT_PATH;
+    } else {
+        $ClassPath = LIBRARY_PATH;
     }
-}
 
-spl_autoload_register("eLoader::autoLoad");
+    if ($Path) {
+        $Path = $ClassPath . implode(DS, $Path) . DS . $Class . ".php";
+    } else {
+        $Path = $ClassPath . $Class . ".php";
+    }
+
+    if (is_readable($Path)) {
+        require_once($Path);
+    }
+});

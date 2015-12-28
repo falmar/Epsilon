@@ -16,7 +16,7 @@ defined("EPSILON_EXEC") or die();
 
 use App\eConfig;
 use Epsilon\Factory;
-use Epsilon\Input\Input;
+use Epsilon\IO\Input;
 use Epsilon\Object\Object;
 use PDO;
 use PDOException;
@@ -81,7 +81,7 @@ abstract class Router extends Object
         return [
             '<Component>/<Action>',
             '<Component>/<Action>/<ID>',
-            '<Component>/<Action>/<Controller>/<ID>'
+            '<Component>/<Controller>/<Action>/<ID>'
         ];
     }
 
@@ -101,7 +101,6 @@ abstract class Router extends Object
      */
     public function getRoute($Key = null)
     {
-
         if (!isset($this->Route)) {
             $this->route();
         }
@@ -121,7 +120,7 @@ abstract class Router extends Object
     public function getRouteString()
     {
         if (!isset($this->Route)) {
-            if (Factory::getApplication()->runningCLI()) {
+            if (Factory::getApplication()->isCLI()) {
                 $strRoute = Factory::getApplication()->getCLIOption('route');
             } else {
                 $strRoute = Factory::getURI()->getInversePath();
@@ -168,8 +167,9 @@ abstract class Router extends Object
 
             $arMap  = explode('/', Input::cleanVar(array_keys($Route)[0]));
             $arPath = explode('/', Input::cleanVar(array_values($Route)[0]));
+            $cMap   = count($arMap);
 
-            for ($f = 0; $f < count($arMap); $f++) {
+            for ($f = 0; $f < $cMap; $f++) {
                 $this->Route[$arMap[$f]] = $arPath[$f];
             }
 
