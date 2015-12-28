@@ -25,20 +25,18 @@ class Site extends Component
 {
 
     /**
-     * @return array
+     * Define the properties for the Component
+     *
+*@return array
      */
     protected function defineProperties()
     {
         return [
             'Controllers' => [
-                [
-                    'Name'    => 'Site',
-                    'Default' => 1
+                ['Name'    => 'Site',
+                 'Default' => 1
                 ],
                 ['Name' => 'SomethingElse']
-            ],
-            'Models'      => [
-                'Yolo'
             ]
         ];
     }

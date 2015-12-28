@@ -16,28 +16,23 @@ function getTime()
 
     return ((float)$o_sec + (float)$sec);
 }
-
 $InitTime = getTime();
 
 define("EPSILON_EXEC", 1);
-
 define("DS", DIRECTORY_SEPARATOR);
-
 define("EPSILON_PATH", __DIR__ . DS);
 
 require_once("App" . DS . "DefinePath.php");
-
 require_once("App" . DS . "DefineVariables.php");
 
 use Epsilon\Factory;
+use App\eConfig;
 
 $App = Factory::getApplication();
-
 $App->initialize();
-
 $App->render();
 
-if (!$App->isXHRequest()) {
+if (!$App->isXHRequest() && eConfig::APP_DEBUG) {
     echo "<p style='color: black;'>";
     echo "&nbsp; Memory Usage: " . sprintf("%0.4f MB", memory_get_peak_usage() / 1048576);
     $EndTime = getTime();

@@ -25,7 +25,9 @@ class Authentication extends Component
 {
 
     /**
-     * @return array
+     * Define the properties for the Component
+     *
+*@return array
      */
     protected function defineProperties()
     {
@@ -45,9 +47,6 @@ class Authentication extends Component
                     'name'    => 'Authentication',
                     'default' => 1
                 ],
-            ],
-            'Models'      => [
-                'AuthenticationM'
             ]
         ];
     }

@@ -27,4 +27,4 @@ set_exception_handler("Epsilon\\Logger\\Logger::uncaughtException");
 
 Factory::setApplication(eConfig::APPLICATION_ID);
 
-//Factory::getLanguage()->addFile("Epsilon.xml");
+Factory::getLanguage()->addFile("Epsilon.xml");
