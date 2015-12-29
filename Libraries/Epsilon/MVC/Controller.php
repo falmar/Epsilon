@@ -355,7 +355,7 @@ abstract class Controller extends ActiveRecord
                         continue;
                     }
 
-                    if (isset($CSS['external']) && (int)$CSS['external'] === 1) {
+                    if (isset($CSS['external']) && (bool)$CSS['external'] === 1) {
                         $Path = null;
                     } else {
                         $Path = $this->getRelativePath();
@@ -388,7 +388,7 @@ abstract class Controller extends ActiveRecord
                         continue;
                     }
 
-                    if (isset($JS['external']) && (int)$JS['external'] === 1) {
+                    if (isset($JS['external']) && (bool)$JS['external'] === 1) {
                         $Path = null;
                     } else {
                         $Path = $this->getRelativePath();

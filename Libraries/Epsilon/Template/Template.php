@@ -279,7 +279,7 @@ abstract class Template extends ActiveRecord
                         continue;
                     }
 
-                    if (isset($CSS['external']) && (int)$CSS['external'] === 1) {
+                    if (isset($CSS['external']) && (bool)$CSS['external'] === true) {
                         $Path = null;
                     } else {
                         $Path = $this->getRelativePath();
@@ -309,7 +309,7 @@ abstract class Template extends ActiveRecord
                         continue;
                     }
 
-                    if (isset($JS['external']) && (int)$JS['external'] === 1) {
+                    if (isset($JS['external']) && (bool)$JS['external'] === true) {
                         $Path = null;
                     } else {
                         $Path = $this->getRelativePath();
@@ -343,7 +343,7 @@ abstract class Template extends ActiveRecord
 
             foreach ($Properties['Languages'] as $lg) {
 
-                if (isset($lg['default']) && $lg['default'] === 1) {
+                if (isset($lg['default']) && (bool)$lg['default'] === true) {
                     $Default = $lg;
                 } elseif (isset($lg['code']) && $lg['code'] == $Code) {
                     $Language = $lg;

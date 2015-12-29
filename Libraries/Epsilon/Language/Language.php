@@ -236,7 +236,7 @@ class Language extends ActiveRecord
                 }
 
             } else {
-                Factory::getLogger()->warning("LanguageException; Can't read Language: {File} ", ['File' => $File]);
+                Factory::getLogger()->warning("LanguageException: Can't read Language: {File} ", ['File' => $File]);
             }
         }
 
