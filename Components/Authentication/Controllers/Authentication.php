@@ -38,9 +38,7 @@ class Authentication extends \Components\Authentication\Authentication
         $this->setSubTitle("Authentication", false);
         SystemMessage::assignMessages('COM_AUTHENTICATION');
 
-        $View = $this->getView("login", [
-            'Login' => $Login
-        ]);
+        $View = $this->getView("login", ['Login' => $Login]);
 
         $View->setDocumentPosition();
     }
@@ -64,9 +62,7 @@ class Authentication extends \Components\Authentication\Authentication
         } else {
             SystemMessage::addMessage("COM_AUTHENTICATION", SystemMessage::MSG_ERROR, "COM_LOGIN-FAILED");
             if (isset($Credentials["Email"])) {
-                Factory::getApplication()->redirect("Authentication/Login/", [
-                    'Login[Email]' => $Credentials["Email"]
-                ]);
+                Factory::getApplication()->redirect("Authentication/Login/", ['Login[Email]' => $Credentials["Email"]]);
             } else {
                 Factory::getApplication()->redirectLogin();
             }

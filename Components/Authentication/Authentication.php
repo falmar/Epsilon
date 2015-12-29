@@ -27,7 +27,7 @@ class Authentication extends Component
     /**
      * Define the properties for the Component
      *
-*@return array
+     * @return array
      */
     protected function defineProperties()
     {
@@ -37,16 +37,11 @@ class Authentication extends Component
                     'name'    => 'English US',
                     'default' => 1,
                     'code'    => 'en-US',
-                    'files'   => [
-                        'com_authentication.xml'
-                    ]
+                    'files'   => ['com_authentication.xml']
                 ]
             ],
             'Controllers' => [
-                [
-                    'name'    => 'Authentication',
-                    'default' => 1
-                ],
+                ['name' => 'Authentication', 'default' => 1],
             ]
         ];
     }

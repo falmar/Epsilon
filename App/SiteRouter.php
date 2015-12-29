@@ -38,6 +38,4 @@ class SiteRouter extends Router
     {
         return [];
     }
-
-
 }

@@ -15,6 +15,4 @@
         <String key="COM_LOGIN-PASSWORD">Password</String>
         <String key="COM_LOGIN-FAILED">Authentication Failed</String>
     </Strings>
-
-
 </Language>

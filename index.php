@@ -10,7 +10,6 @@
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
-
 define("EPSILON_EXEC", 1);
 define("DS", DIRECTORY_SEPARATOR);
 define("EPSILON_PATH", __DIR__ . DS);
