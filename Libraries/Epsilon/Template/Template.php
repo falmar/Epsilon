@@ -199,7 +199,6 @@ abstract class Template extends ActiveRecord
 
     public function display()
     {
-
         if (!$this->Rendered) {
             $eApplication = Factory::getApplication();
             $ContentType  = $eApplication->get("ContentType");
@@ -328,7 +327,6 @@ abstract class Template extends ActiveRecord
      */
     public function setLanguageFile($File = null)
     {
-
         $Files      = null;
         $Language   = null;
         $Properties = $this->defineProperties();
@@ -340,7 +338,6 @@ abstract class Template extends ActiveRecord
         }
 
         if (isset($Properties['Languages']) && is_array($Properties['Languages'])) {
-
             foreach ($Properties['Languages'] as $lg) {
 
                 if (isset($lg['default']) && (bool)$lg['default'] === true) {
@@ -353,6 +350,7 @@ abstract class Template extends ActiveRecord
 
             if (!$Language && isset($Default)) {
                 $Language = $Default;
+                $Code     = (isset($Language['code'])) ? $Language['code'] : $Code;
             }
 
             if (isset($Language['files']) && is_array($Language['files'])) {
@@ -367,12 +365,12 @@ abstract class Template extends ActiveRecord
                 if ($isArray) {
                     foreach ($File as $f) {
                         if ($f == (string)$lang) {
-                            $eLang->addFile((string)$lang, $this->getPath() . "Language" . DS);
+                            $eLang->addFile((string)$lang, $this->getPath() . "Language" . DS, $Code);
                             break;
                         }
                     }
                 } else {
-                    $eLang->addFile((string)$lang, $this->getPath() . "Language" . DS);
+                    $eLang->addFile((string)$lang, $this->getPath() . "Language" . DS, $Code);
                 }
             }
         }

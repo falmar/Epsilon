@@ -186,7 +186,6 @@ abstract class Controller extends ActiveRecord
     protected function getParams()
     {
         $Params = $this->get("Params");
-
         if (is_string($Params)) {
             $Params = (array)json_decode($Params);
         } elseif (!$Params) {
@@ -217,11 +216,9 @@ abstract class Controller extends ActiveRecord
     public function setParam($Key, $Value)
     {
         $Params = $this->getParams();
-
         if (is_array($Params)) {
             $Params[$Key] = $Value;
         }
-
         $this->setParams($Params);
     }
 
@@ -286,7 +283,6 @@ abstract class Controller extends ActiveRecord
      */
     protected function setLanguageFile($File = null)
     {
-
         $Files      = null;
         $eLang      = Factory::getLanguage();
         $Code       = $eLang->get("Code");
@@ -298,10 +294,9 @@ abstract class Controller extends ActiveRecord
         }
 
         if (isset($Properties['Languages']) && is_array($Properties['Languages'])) {
-
             foreach ($Properties['Languages'] as $lg) {
 
-                if (isset($lg['default']) && (int)$lg['default'] === 1) {
+                if (isset($lg['default']) && (bool)$lg['default'] === true) {
                     $Default = $lg;
                 } elseif (isset($lg['code']) && $lg['code'] == $Code) {
                     $Language = $lg;
@@ -311,6 +306,7 @@ abstract class Controller extends ActiveRecord
 
             if (!$Language && isset($Default)) {
                 $Language = $Default;
+                $Code     = (isset($Language['code'])) ? $Language['code'] : $Code;
             }
 
             if (isset($Language['files']) && is_array($Language['files'])) {
@@ -323,16 +319,15 @@ abstract class Controller extends ActiveRecord
                 if (is_array($File)) {
                     foreach ($File as $f) {
                         if ($f == (string)$lang) {
-                            $eLang->addFile((string)$lang, $this->getPath() . "Language" . DS);
+                            $eLang->addFile((string)$lang, $this->getPath() . "Language" . DS, $Code);
                             break;
                         }
                     }
                 } else {
-                    $eLang->addFile((string)$lang, $this->getPath() . "Language" . DS);
+                    $eLang->addFile((string)$lang, $this->getPath() . "Language" . DS, $Code);
                 }
             }
         }
-
     }
 
     /**
@@ -372,7 +367,6 @@ abstract class Controller extends ActiveRecord
      */
     protected function setJS($FileNames = [])
     {
-
         if (!is_array($FileNames)) {
             $FileNames = [$FileNames];
         }
@@ -447,8 +441,7 @@ abstract class Controller extends ActiveRecord
                     }
                 }
 
-                $class = "\\" . $this->ControllerType . "s\\" . $Component . "\\Models\\" . $ClassName;
-
+                $class               = "\\" . $this->ControllerType . "s\\" . $Component . "\\Models\\" . $ClassName;
                 $this->Models[$Name] = new $class;
 
             } catch (Exception $e) {
