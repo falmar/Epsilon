@@ -36,11 +36,7 @@ class SiteRouter extends Router
      */
     protected function getRules()
     {
-        return [
-            'Site/<Year:\d{4}>/List'               => 'Site/Index',
-            'Site/<Category:\w+>/List'             => 'Site/Index',
-            'Site/<Day:\d{0-2}>/<Year:\d{3}>/List' => 'Site/Index',
-        ];
+        return [];
     }
 
 

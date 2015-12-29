@@ -14,8 +14,6 @@ namespace Components\Site\Controllers;
 
 defined("EPSILON_EXEC") or die();
 
-use Epsilon\Factory;
-
 /**
  * Class Site
  *
@@ -25,19 +23,8 @@ class Site extends \Components\Site\Site
 {
     public function Index($ID)
     {
-
         $this->setSubTitle('Home', false);
-
-        $View = $this->getView('Home', [
-            'Var1'       => 'This is',
-            'Var2'       => 'a test.',
-            'URL'        => Factory::getRouter()->getURL('Site/Index', ['title' => 'yolo']),
-            'Year'       => Factory::getRouter()->getRoute('Year'),
-            'CategoryID' => Factory::getRouter()->getRoute('CategoryID'),
-            'ID'         => $ID
-        ]);
-
+        $View = $this->getView('Home');
         $View->setDocumentPosition();
-
     }
 }
