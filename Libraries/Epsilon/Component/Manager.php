@@ -136,5 +136,4 @@ class Manager extends Object
     {
         return COMPONENT_PATH;
     }
-
 }
