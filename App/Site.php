@@ -25,11 +25,11 @@ class Site extends Application
 
     public function redirectLogin()
     {
-        $this->redirect('Authentication/Login/');
+        $this->redirect('Authentication/Login');
     }
 
     public function redirectHome()
     {
-        $this->redirect('Home/Index/');
+        $this->redirect('Home/Index');
     }
 }

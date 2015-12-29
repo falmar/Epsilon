@@ -10,13 +10,6 @@
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
-function getTime()
-{
-    list($o_sec, $sec) = explode(" ", microtime());
-
-    return ((float)$o_sec + (float)$sec);
-}
-$InitTime = getTime();
 
 define("EPSILON_EXEC", 1);
 define("DS", DIRECTORY_SEPARATOR);
@@ -26,17 +19,7 @@ require_once("App" . DS . "DefinePath.php");
 require_once("App" . DS . "DefineVariables.php");
 
 use Epsilon\Factory;
-use App\eConfig;
 
 $App = Factory::getApplication();
 $App->initialize();
 $App->render();
-
-if (!$App->isXHRequest() && eConfig::APP_DEBUG) {
-    echo "<p style='color: black;'>";
-    echo "&nbsp; Memory Usage: " . sprintf("%0.4f MB", memory_get_peak_usage() / 1048576);
-    $EndTime = getTime();
-    $Time    = round($EndTime - $InitTime, 6);
-    echo "<br>&nbsp; This site has loaded in $Time seconds.";
-    echo "</p>";
-}
