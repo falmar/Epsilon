@@ -127,7 +127,7 @@ abstract class Application extends Object
     /**
      * Return the string of the Application ID
      *
-*@return string
+     * @return string
      */
     public function getApplicationID()
     {
@@ -162,8 +162,8 @@ abstract class Application extends Object
      * Redirect the Application
      * Calls the Router::getURL() method
      *
-     * @param             $URL
-     * @param array $arQuery
+     * @param string $URL
+     * @param array  $arQuery
      */
     public function redirect($URL, $arQuery = [])
     {
