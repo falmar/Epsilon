@@ -93,17 +93,17 @@ abstract class Template extends ActiveRecord
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     abstract protected function defineDefaultTemplate();
 
     /**
-     * @return mixed
+     * @return string
      */
     abstract protected function defineDefaultXHRTemplate();
 
     /**
-     * @return mixed
+     * @return array
      */
     abstract protected function defineProperties();
 
