@@ -23,7 +23,7 @@ use Epsilon\User\SystemMessage;
             /** @var SystemMessage $Message */
             foreach ($this->getVar('SystemMessages') as $Message) {
                 ?>
-                <div class="alert callout <?php echo $Message->get("Type") ?>" data-closable>
+                <div class="callout <?php echo $Message->get("Type") ?>" data-closable>
                     <?php echo $Message->get("Message") ?>
                     <?php $Message->setViewed(1) ?>
                     <button class="close-button" aria-label="Dismiss alert" type="button" data-close>

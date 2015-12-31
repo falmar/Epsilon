@@ -33,6 +33,9 @@
         <String key="TABLE-OF">of</String>
         <String key="TABLE-RESULTS">Results</String>
         <String key="TABLE-PAGES">Pages</String>
+        <String key="TABLE-PAGES">Pages</String>
+        <String key="LIST-RESULT-NEXT">Next</String>
+        <String key="LIST-RESULT-PREVIOUS">Previous</String>
 
         <String key="OPTIONS">Options</String>
         <String key="STATUS">Status</String>
