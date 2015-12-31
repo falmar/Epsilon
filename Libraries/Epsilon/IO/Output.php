@@ -69,7 +69,7 @@ class Output
      * @param int   $ClearingMethod
      * @return mixed
      */
-    private static function cleanValueByType($Value, $ClearingMethod)
+    private static function cleanValueByType(&$Value, $ClearingMethod)
     {
         switch ($ClearingMethod) {
             case self::HTML:
@@ -96,7 +96,5 @@ class Output
                 $Value = preg_replace('/[^A-Za-z0-9_\!\?\=\* \&\@\:\(\)\\+\.\,\/\s\-]/', '', $Value);
                 break;
         }
-
-        return $Value;
     }
 }

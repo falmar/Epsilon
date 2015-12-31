@@ -128,12 +128,11 @@ class Utility
      * @param      $Results
      * @param      $ElementID
      * @param null $MaxPageSize
-     * @return Object
+     * @return \Epsilon\Object\Object
      */
     public static function foundationListPaging($Results, $ElementID, $MaxPageSize = null)
     {
         $CurrentPage = Input::getVar("CurrentPage", "REQUEST");
-
 
         if (is_integer($MaxPageSize)) {
             $PageSize = $MaxPageSize;
@@ -142,13 +141,14 @@ class Utility
         }
 
         $Paging = new Object([
-            "HTML"         => "",
-            "Init"         => 0,
-            "Max"          => $PageSize,
-            "PageInit"     => 0,
-            "PageMax"      => 0,
-            "TotalPages"   => 0,
-            "TotalResults" => 0
+            'HTML'         => null,
+            'Init'         => 0,
+            'Max'          => $PageSize,
+            'Results'      => 0,
+            'PageInit'     => 0,
+            'PageMax'      => 0,
+            'TotalPages'   => 0,
+            'TotalResults' => 0
         ]);
 
         if (is_array($Results)) {
@@ -211,38 +211,39 @@ class Utility
                 if (!$PreviousSet) {
                     $Previus = $CurrentPage - 1;
                     if ($CurrentPage != 1) {
-                        $HTML .= "<ul class='pagination'><li class='arrow'><a href='javascript:goToPage($Previus,$ElementID)'>&laquo; " . $eLanguage->_("LIST-RESULT-PREVIOUS") . "</a></li>";
+                        $HTML .= "<ul class=\"pagination text-center\" role=\"navigation\" aria-label=\"Pagination\">\n<li class=\"pagination-previous\"><a href='javascript:goToPage($Previus, $ElementID)'><span class=\"show-for-sr\">page</span> " . $eLanguage->_("LIST-RESULT-PREVIOUS") . "</a></li>\n";
                     } else {
-                        $HTML .= "<ul class='pagination'><li class='arrow unavailable'><a>&laquo; " . $eLanguage->_("LIST-RESULT-PREVIOUS") . "</a></li>";
+                        $HTML .= "<ul class=\"pagination text-center\" role=\"navigation\" aria-label=\"Pagination\">\n<li class=\"pagination-previous disabled\"><span class=\"show-for-sr\">page</span> " . $eLanguage->_("LIST-RESULT-PREVIOUS") . "</li>\n";
                     }
                     $PreviousSet = true;
                 }
 
                 if ($CurrentPage == $p) {
-                    $HTML .= "<li class='current'><a href='javascript:void(0)'>$p</a></li>";
+                    $HTML .= "<li class='current'><span class=\"show-for-sr\">You're on page </span > $p</li > \n";
                 } else {
-                    $HTML .= "<li><a href='javascript:goToPage($p,$ElementID)'>$p</a></li>";
+                    $HTML .= " <li><a href = 'javascript:goToPage($p,$ElementID)' > $p</a ></li > \n";
                 }
 
                 if ($PagesCount == count($Pages)) {
                     $Next = $CurrentPage + 1;
                     if ($CurrentPage != $p) {
-                        $HTML .= "<li class='arrow'><a href='javascript:goToPage($Next,$ElementID)'>" . $eLanguage->_("LIST-RESULT-NEXT") . " &raquo;</a></li></ul>";
+                        $HTML .= "<li class=\"pagination-next\"><a aria-label=\"Next page\" href='javascript:goToPage($Next,$ElementID)'>" . $eLanguage->_("LIST-RESULT-NEXT") . " <span class=\"show-for-sr\">page</span></a></li></ul>";
                     } else {
-                        $HTML .= "<li class='arrow unavailable'><a>" . $eLanguage->_("LIST-RESULT-NEXT") . " &raquo;</a></li></ul>";
+                        $HTML .= "<li class=\"pagination-next disabled\"><span class=\"show-for-sr\">page</span>" . $eLanguage->_("LIST-RESULT-NEXT") . "</li>\n</ul>";
                     }
                 }
 
             }
 
             $Paging->setProperties([
-                "HTML"         => $HTML,
-                "Init"         => $Init,
-                "Max"          => $Max,
-                "PageInit"     => $PageInit,
-                "PageMax"      => $PageMax,
-                "TotalPages"   => $TotalPages,
-                "TotalResults" => $TotalResults
+                'HTML'         => $HTML,
+                'Init'         => $Init,
+                'Max'          => $Max,
+                'Results'      => ($PageMax - $PageInit) + 1,
+                'PageInit'     => $PageInit,
+                'PageMax'      => $PageMax,
+                'TotalPages'   => $TotalPages,
+                'TotalResults' => $TotalResults
             ]);
 
         }
