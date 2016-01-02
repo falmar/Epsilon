@@ -125,7 +125,6 @@ abstract class ActiveRecord
      */
     public function __construct($objPDO, $ID_Data = null, $blResultSet = true)
     {
-
         $this->objPDO             = $objPDO;
         $this->arTableName        = $this->defineTableName();
         $this->arTableMap         = $this->defineTableMap();
@@ -138,6 +137,7 @@ abstract class ActiveRecord
         $this->blForDeletion      = false;
         $this->blForceDeletion    = false;
         $this->arModifiedFields   = [];
+        $this->arRelationKeys = [];
 
         /**
          * IF $ID_Data is a numeric | string variable value set as DataBoundObject ID
@@ -159,18 +159,14 @@ abstract class ActiveRecord
 
         if (isset($this->ID)) {
 
-            switch ($map) {
-                case "arTableMap":
-                    $loaded = &$this->blIsLoaded;
-                    break;
-                case "arLazyTableMap":
-                    $loaded = &$this->blIsLazyLoaded;
-                    break;
-                case "arRelationMap":
-                    $loaded = &$this->blIsRelationLoaded;
-                    break;
-                default:
-                    return false;
+            if ($map === 'arTableMap') {
+                $loaded = &$this->blIsLoaded;
+            } elseif ($map === 'arLazyTableMap') {
+                $loaded = &$this->blIsLazyLoaded;
+            } elseif ($map === 'arRelationMap') {
+                $loaded = &$this->blIsRelationLoaded;
+            } else {
+                return false;
             }
 
             if ($loaded) {
@@ -440,19 +436,14 @@ abstract class ActiveRecord
     {
         $Rule = isset($this->arRules[$Key]) ? ((is_array($this->arRules[$Key])) ? $this->arRules[$Key][0] : $this->arRules[$Key]) : null;
 
-        switch ($Rule) {
-            case self::INT:
-                $Value = intval($Value);
-                break;
-            case self::FLOAT:
-                $Value = floatval($Value);
-                break;
-            case self::BOOL:
-                $Value = boolval($Value);
-                break;
-            case self::STRING:
-                $Value = strval($Value);
-                break;
+        if ($Rule === self::INT) {
+            $Value = intval($Value);
+        } elseif ($Rule === self::FLOAT) {
+            $Value = floatval($Value);
+        } elseif ($Rule === self::BOOL) {
+            $Value = boolval($Value);
+        } elseif ($Rule === self::STRING) {
+            $Value = strval($Value);
         }
 
         return $Value;
@@ -488,11 +479,7 @@ abstract class ActiveRecord
      */
     private function propertyExist($key)
     {
-        foreach ([
-            'arTableMap',
-            'arLazyTableMap',
-            'arRelationMap'
-        ] as $map) {
+        foreach (['arTableMap', 'arLazyTableMap', 'arRelationMap'] as $map) {
             if ($this->checkPropertiesMap($key, $map)) {
                 return $map;
             }

@@ -162,10 +162,9 @@ class Session
             $stmt->execute();
             $stmt->fetch();
 
-            if (!$this->SessionID) {
+            if (!$this->SessionID && !Factory::getApplication()->isCLI()) {
                 $ssql = "INSERT INTO Session (AsciiSessionID, LastImpress, RegisteredDate, UserAgent, RemoteIPv4,RemoteIPv6, CookieToken)
-						VALUES
-						  (:Ascii_ID,:now,:now,:UserAgent,:RemoteIPv4,:RemoteIPv6,:CookieToken)";
+						VALUES (:Ascii_ID,:now,:now,:UserAgent,:RemoteIPv4,:RemoteIPv6,:CookieToken)";
                 $stmt = $this->objPDO->prepare($ssql);
                 $stmt->bindValue(":Ascii_ID", $PHP_SessionID, PDO::PARAM_STR);
                 $stmt->bindValue(":now", $this->getDateNOW(), PDO::PARAM_STR);
@@ -175,8 +174,9 @@ class Session
                 $stmt->bindValue(":CookieToken", $this->CookieToken, PDO::PARAM_STR);
                 $stmt->execute();
                 $this->SessionID     = $this->objPDO->lastInsertId();
-                $this->PHP_SessionID = $PHP_SessionID;
             }
+
+            $this->PHP_SessionID = $PHP_SessionID;
 
             $this->timeOutVariables();
             $this->impress();
@@ -282,7 +282,7 @@ class Session
      */
     public function writeVariables()
     {
-        if ($this->blWritten) {
+        if ($this->blWritten || Factory::getApplication()->isCLI()) {
             return false;
         }
 

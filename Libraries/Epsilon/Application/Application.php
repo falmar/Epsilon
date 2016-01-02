@@ -109,6 +109,14 @@ abstract class Application extends Object
     {
         Factory::getDocument()->initialize();
 
+        if ($this->isCLI()) {
+            if ($this->getCLIOption('user') && $this->getCLIOption('password')) {
+                if (!Factory::getUser()->authenticate($this->getCLIOption('user'), $this->getCLIOption('password'), true)) {
+                    Factory::getLogger()->emergency('Wrong username or password');
+                }
+            }
+        }
+
         $this->Component = $this->getComponentManager()->getComponent();
 
         if (!$this->XHRequest) {
@@ -200,9 +208,10 @@ abstract class Application extends Object
         $args = [];
         if (isset($_SERVER['argv'])) {
             foreach ($_SERVER['argv'] as $arg) {
-                if (strpos($arg, ':')) {
-                    $option           = explode(':', $arg);
-                    $args[$option[0]] = $option[1];
+                if (preg_match('/([^=]+):(.*)/', $arg, $reg)) {
+                    $args[$reg[1]] = $reg[2];
+                } elseif (preg_match('/-([a-zA-Z0-9])/', $arg, $reg)) {
+                    $args[$reg[1]] = 'true';
                 }
             }
         }

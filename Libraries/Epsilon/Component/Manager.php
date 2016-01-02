@@ -73,7 +73,11 @@ class Manager extends Object
                     /** Verify if the current user has access to the component */
                     if (!in_array($Component->get("AccessLevelID"), $AccessLevels)) {
                         if (Factory::getUser()->isGuest()) {
-                            Factory::getApplication()->redirectLogin();
+                            if (Factory::getApplication()->isCLI()) {
+                                Factory::getLogger()->alert(Factory::getLanguage()->_('NOT_AUTHORIZED'));
+                            } else {
+                                Factory::getApplication()->redirectLogin();
+                            }
                         } else {
                             Factory::getApplication()->redirectHome();
                         }
