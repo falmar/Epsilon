@@ -14,6 +14,7 @@ namespace Epsilon\Environment;
 
 defined("EPSILON_EXEC") or die();
 
+use Epsilon\Factory;
 use Epsilon\Object\Object;
 
 /**
@@ -75,7 +76,10 @@ class Cookie extends Object
         ];
 
         $Lifespan = time() + ((is_int($Lifespan)) ? $Lifespan : $this->Lifespan);
-        setcookie($Key, base64_encode($Value), $Lifespan, $this->Path, $this->Domain);
+
+        if (!Factory::getApplication()->isCLI()) {
+            setcookie($Key, base64_encode($Value), $Lifespan, $this->Path, $this->Domain);
+        }
     }
 
     /**

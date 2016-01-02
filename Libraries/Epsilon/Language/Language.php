@@ -109,13 +109,13 @@ class Language extends ActiveRecord
 
             $dbh           = Factory::getDBH();
             $ApplicationID = Factory::getApplication()->getApplicationID();
-            $Cookie        = Factory::getCookie();
+            $Session       = Factory::getSession();
             $LanguageID    = null;
 
             if (Input::getVar("LanguageID", "REQUEST")) {
                 $LanguageID = Input::getVar("LanguageID", "REQUEST");
-            } elseif ($Cookie->get("LanguageID")) {
-                $LanguageID = $Cookie->get("LanguageID");
+            } elseif ($Session->get("LanguageID")) {
+                $LanguageID = $Session->get("LanguageID");
             }
 
             if ($LanguageID) {
@@ -152,8 +152,8 @@ class Language extends ActiveRecord
                 }
             }
 
-            if (self::$Instance instanceof Language && !$Cookie->get("LanguageID") || self::$Instance->get("ID") != $Cookie->get("LanguageID")) {
-                $Cookie->set("LanguageID", self::$Instance->get("ID"));
+            if (self::$Instance instanceof Language && !$Session->get("LanguageID") || self::$Instance->get("ID") != $Session->get("LanguageID")) {
+                $Session->set("LanguageID", self::$Instance->get("ID"));
                 Factory::getSession()->set("Language", null);
             } else {
                 $Language = Factory::getSession()->get("Language");

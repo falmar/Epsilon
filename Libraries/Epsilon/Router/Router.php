@@ -266,6 +266,8 @@ abstract class Router extends Object
 
         if (!eConfig::PRETTY_URL && $Route) {
             $Route = "?r={$Route}";
+        } elseif (strpos($Route, '/') !== 0 && $Route) {
+            $Route = '/' . $Route;
         }
 
         foreach ($arQuery as $Key => $Value) {
@@ -280,7 +282,7 @@ abstract class Router extends Object
             $Fragment = "#{$Fragment}";
         }
 
-        return $eURI->getRelativePath() . ((eConfig::SHOW_SCRIPT) ? 'index.php/' : null) . $Route . $Query . $Fragment;
+        return $eURI->getRelativePath() . ((eConfig::SHOW_SCRIPT) ? 'index.php' : null) . $Route . $Query . $Fragment;
     }
 
     /**

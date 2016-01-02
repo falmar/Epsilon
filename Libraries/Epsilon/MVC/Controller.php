@@ -350,7 +350,7 @@ abstract class Controller extends ActiveRecord
                         continue;
                     }
 
-                    if (isset($CSS['external']) && (bool)$CSS['external'] === 1) {
+                    if (isset($CSS['external']) && (bool)$CSS['external'] === true) {
                         $Path = null;
                     } else {
                         $Path = $this->getRelativePath();
@@ -382,7 +382,7 @@ abstract class Controller extends ActiveRecord
                         continue;
                     }
 
-                    if (isset($JS['external']) && (bool)$JS['external'] === 1) {
+                    if (isset($JS['external']) && (bool)$JS['external'] === true) {
                         $Path = null;
                     } else {
                         $Path = $this->getRelativePath();
@@ -413,7 +413,7 @@ abstract class Controller extends ActiveRecord
      * @param null $Component
      * @return object
      */
-    protected function loadModel($Name, $Component = null)
+    protected function getModel($Name, $Component = null)
     {
         if (!isset($this->Models[$Name])) {
 

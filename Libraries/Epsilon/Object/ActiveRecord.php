@@ -14,6 +14,8 @@ namespace Epsilon\Object;
 
 defined("EPSILON_EXEC") or die();
 
+use Epsilon\Database\Debug;
+use Epsilon\User\SystemMessage;
 use PDO;
 use PDOException;
 
@@ -92,6 +94,15 @@ abstract class ActiveRecord
      */
     protected $arModifiedFields;
 
+    /** Rules */
+
+    protected $arRules;
+
+    const INT    = 1;
+    const FLOAT  = 2;
+    const STRING = 3;
+    const BOOL   = 4;
+
     /** @return array */
     abstract protected function defineTableName();
 
@@ -114,18 +125,19 @@ abstract class ActiveRecord
      */
     public function __construct($objPDO, $ID_Data = null, $blResultSet = true)
     {
-
         $this->objPDO             = $objPDO;
         $this->arTableName        = $this->defineTableName();
         $this->arTableMap         = $this->defineTableMap();
         $this->arLazyTableMap     = $this->defineLazyTableMap();
         $this->arRelationMap      = $this->defineRelationMap();
+        $this->arRules            = $this->defineRules();
         $this->blIsLoaded         = false;
         $this->blIsLazyLoaded     = false;
         $this->blIsRelationLoaded = false;
         $this->blForDeletion      = false;
         $this->blForceDeletion    = false;
         $this->arModifiedFields   = [];
+        $this->arRelationKeys = [];
 
         /**
          * IF $ID_Data is a numeric | string variable value set as DataBoundObject ID
@@ -147,18 +159,14 @@ abstract class ActiveRecord
 
         if (isset($this->ID)) {
 
-            switch ($map) {
-                case "arTableMap":
-                    $loaded = &$this->blIsLoaded;
-                    break;
-                case "arLazyTableMap":
-                    $loaded = &$this->blIsLazyLoaded;
-                    break;
-                case "arRelationMap":
-                    $loaded = &$this->blIsRelationLoaded;
-                    break;
-                default:
-                    return false;
+            if ($map === 'arTableMap') {
+                $loaded = &$this->blIsLoaded;
+            } elseif ($map === 'arLazyTableMap') {
+                $loaded = &$this->blIsLazyLoaded;
+            } elseif ($map === 'arRelationMap') {
+                $loaded = &$this->blIsRelationLoaded;
+            } else {
+                return false;
             }
 
             if ($loaded) {
@@ -234,6 +242,8 @@ abstract class ActiveRecord
             return false;
         }
 
+        $this->checkNotNulls();
+
         $ssqlValues = "";
         $ID         = null;
 
@@ -287,7 +297,8 @@ abstract class ActiveRecord
         foreach ($maps as $map) {
             foreach ($this->$map as $key => $value) {
                 if (isset($this->$value) && $this->modifiedProperty($value)) {
-                    $stmt->bindValue(":$key", $this->$value, $this->getPDOParamType($this->$value));
+                    $CleanValue = $this->getByRule($key, $this->$value);
+                    $stmt->bindValue(":$key", $CleanValue, $this->getPDOParamType($CleanValue));
                 }
             }
         }
@@ -356,7 +367,6 @@ abstract class ActiveRecord
 
         /** If the key exist set the value */
         if ($actualKey) {
-
             if ($blResultSet && !$this->modifiedProperty($actualKey)) {
                 $this->set($actualKey, $value, $blResultSet);
             } elseif (!$blResultSet) {
@@ -406,13 +416,37 @@ abstract class ActiveRecord
     {
         $map = $this->propertyExist($Key);
         if ($map) {
-            $this->$Key = $Value;
+            $this->$Key = ($Value !== '') ? $Value : null;
             if ($map != "arRelationMap" && $Key != "ID" && !$ResultSet) {
                 $this->arModifiedFields[$Key] = true;
             }
         } elseif (property_exists($this, $Key)) {
-            $this->$Key = $Value;
+            $this->$Key = ($Value !== '') ? $Value : null;
         }
+    }
+
+    /**
+     * Eval the Value
+     *
+     * @param $Key
+     * @param $Value
+     * @return mixed
+     */
+    private function getByRule($Key, $Value)
+    {
+        $Rule = isset($this->arRules[$Key]) ? ((is_array($this->arRules[$Key])) ? $this->arRules[$Key][0] : $this->arRules[$Key]) : null;
+
+        if ($Rule === self::INT) {
+            $Value = intval($Value);
+        } elseif ($Rule === self::FLOAT) {
+            $Value = floatval($Value);
+        } elseif ($Rule === self::BOOL) {
+            $Value = boolval($Value);
+        } elseif ($Rule === self::STRING) {
+            $Value = strval($Value);
+        }
+
+        return $Value;
     }
 
     /**
@@ -445,11 +479,7 @@ abstract class ActiveRecord
      */
     private function propertyExist($key)
     {
-        foreach ([
-            'arTableMap',
-            'arLazyTableMap',
-            'arRelationMap'
-        ] as $map) {
+        foreach (['arTableMap', 'arLazyTableMap', 'arRelationMap'] as $map) {
             if ($this->checkPropertiesMap($key, $map)) {
                 return $map;
             }
@@ -497,6 +527,22 @@ abstract class ActiveRecord
         }
 
         return $this->arRelationKeys;
+    }
+
+    private function checkNotNulls()
+    {
+        if ($this->objPDO->getAttribute(PDO::ATTR_ERRMODE) != PDO::ERRMODE_EXCEPTION) {
+            foreach ($this->arModifiedFields as $Key => $V) {
+                $NotNull = (isset($this->arRules[$Key]) && is_array($this->arRules[$Key])) ? $this->arRules[$Key][1] : false;
+                if ($NotNull && is_null($this->$Key)) {
+                    $Message = "Field '{$Key}' can not be null";
+                    if (!Debug::inDebug()) {
+                        SystemMessage::addMessage('_system', SystemMessage::MSG_WARNING, $Message, false);
+                    }
+                    throw new PDOException($Message);
+                }
+            }
+        }
     }
 
     /**
