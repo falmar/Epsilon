@@ -137,7 +137,6 @@ abstract class ActiveRecord
         $this->blForDeletion      = false;
         $this->blForceDeletion    = false;
         $this->arModifiedFields   = [];
-        $this->arRelationKeys = [];
 
         /**
          * IF $ID_Data is a numeric | string variable value set as DataBoundObject ID
@@ -495,12 +494,12 @@ abstract class ActiveRecord
      */
     private function checkPropertiesMap($Property, $map)
     {
-        if ($map == "arTableMap" || $map == "arLazyTableMap") {
+        if ($map === "arTableMap" || $map === "arLazyTableMap") {
             if (in_array($Property, $this->$map)) {
                 return true;
             }
-        } elseif ($map == "arRelationMap") {
-            if (in_array($Property, $this->arRelationKeys)) {
+        } elseif ($map === "arRelationMap") {
+            if (in_array($Property, $this->getRelationKeys())) {
                 return true;
             }
         }

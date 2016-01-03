@@ -65,7 +65,7 @@ class Manager extends Object
 
             $stmt = $dbh->prepare("SELECT mdl.ModuleID,mdl.Module FROM Module mdl
 							INNER JOIN ModuleMenu mdlm ON mdlm.ModuleID = mdl.ModuleID
-							WHERE mdl.blStatus = 1 AND mdl.ApplicationID = :AppID AND mdl.AccessLevelID IN ($AccessLevels) AND (mdlm.MenuID IN ($MenuIDs) OR mdlm.MenuID = 0) AND mdlm.Visible != 0 GROUP BY mdl.ModuleID");
+							WHERE mdl.blStatus = 1 AND mdl.ApplicationID = :AppID AND mdl.AccessLevelID IN ($AccessLevels) AND (mdlm.MenuID IN ($MenuIDs) OR mdlm.MenuID = 0) AND mdlm.Visible != 0 GROUP BY mdl.ModuleID ORDER BY Ordering");
 
             try {
                 $stmt->bindValue(":AppID", Factory::getApplication()->getApplicationID(), PDO::PARAM_STR);

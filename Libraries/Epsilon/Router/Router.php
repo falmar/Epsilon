@@ -286,7 +286,9 @@ abstract class Router extends Object
     }
 
     /**
-     * @return mixed
+     * TODO: rewrite method
+     *
+*@return mixed
      */
     public function getCurrentMenuID()
     {
@@ -295,15 +297,7 @@ abstract class Router extends Object
             $App           = Factory::getApplication();
             $ComponentID   = $App->get("Component")->get("ID");
             $ApplicationID = $App->getApplicationID();
-            $URI           = Factory::getURI();
-
-            $URL = $URI->getInversePath();
-
-            if ($URL) {
-                $URL = "index.php/" . $URL;
-            } else {
-                $URL = "index.php";
-            }
+            $URL           = $this->getRouteString();
 
             $ssql = "SELECT m.MenuID AS MenuID FROM Menu m
 					INNER JOIN MenuBundle mb ON mb.MenuBundleID = m.MenuBundleID
