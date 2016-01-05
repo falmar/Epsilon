@@ -69,11 +69,10 @@ class fSite extends Template
                 ['src' => 'vendor/jquery/jquery.min.js'],
                 ['src' => 'vendor/what-input/what-input.min.js'],
                 ['src' => 'vendor/foundation-sites/foundation.min.js'],
-                ['src' => 'vendor/foundation-sites/js/foundation.util.mediaQuery.js'],
                 ['src' => 'js/app.js'],
             ],
             'CSS'         => [
-                ['src' => 'css/app.css']
+                ['src' => 'vendor/foundation-sites/foundation.min.css']
             ]
         ];
     }
