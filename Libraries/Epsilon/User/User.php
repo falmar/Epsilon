@@ -14,7 +14,7 @@ namespace Epsilon\User;
 
 defined("EPSILON_EXEC") or die();
 
-use App\eConfig;
+use App\Config;
 use Epsilon\Factory;
 use Epsilon\Object\ActiveRecord;
 use Epsilon\Object\Object;
@@ -257,7 +257,7 @@ class User extends ActiveRecord
         $dbh = Factory::getDBH();
         try {
             if ($this->authenticate($this->get('Email'), $actualPassword, false)) {
-                $this->set('Password', password_hash($newPassword, PASSWORD_DEFAULT, ['cost' => eConfig::PASSWORD_HAST_COST]));
+                $this->set('Password', password_hash($newPassword, PASSWORD_DEFAULT, ['cost' => Config::PASSWORD_HAST_COST]));
 
                 return $this->save();
             }

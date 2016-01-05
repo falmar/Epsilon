@@ -14,7 +14,7 @@ namespace Epsilon\Router;
 
 defined("EPSILON_EXEC") or die();
 
-use App\eConfig;
+use App\Config;
 use Epsilon\Factory;
 use Epsilon\IO\Input;
 use Epsilon\Object\Object;
@@ -264,14 +264,14 @@ abstract class Router extends Object
             }
         }
 
-        if (!eConfig::PRETTY_URL && $Route) {
+        if (!Config::PRETTY_URL && $Route) {
             $Route = "?r={$Route}";
         } elseif (strpos($Route, '/') !== 0 && $Route) {
             $Route = '/' . $Route;
         }
 
         foreach ($arQuery as $Key => $Value) {
-            if (!$Query && eConfig::PRETTY_URL) {
+            if (!$Query && Config::PRETTY_URL) {
                 $Query = "?" . $Key . "=" . $Value;
             } else {
                 $Query = "&" . $Key . "=" . $Value;
@@ -282,7 +282,7 @@ abstract class Router extends Object
             $Fragment = "#{$Fragment}";
         }
 
-        return $eURI->getRelativePath() . ((eConfig::SHOW_SCRIPT) ? 'index.php' : null) . $Route . $Query . $Fragment;
+        return $eURI->getRelativePath() . ((Config::SHOW_SCRIPT) ? 'index.php' : null) . $Route . $Query . $Fragment;
     }
 
     /**

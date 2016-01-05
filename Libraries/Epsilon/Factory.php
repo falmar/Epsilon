@@ -14,7 +14,7 @@ namespace Epsilon;
 
 defined("EPSILON_EXEC") or die();
 
-use App\eConfig;
+use App\Config;
 use Epsilon\Access\Access;
 use Epsilon\Application\Application;
 use Epsilon\Database\DatabaseHandler;
@@ -113,9 +113,9 @@ class Factory
     {
         if (!self::$Cookie) {
             self::$Cookie = new Cookie([
-                "Lifespan" => eConfig::SESSION_LIFESPAN,
-                "Path"     => eConfig::COOKIE_PATH,
-                "Domain"   => eConfig::COOKIE_DOMAIN
+                "Lifespan" => Config::SESSION_LIFESPAN,
+                "Path"     => Config::COOKIE_PATH,
+                "Domain"   => Config::COOKIE_DOMAIN
             ]);
         }
 
@@ -128,7 +128,7 @@ class Factory
     public static function getSession()
     {
         if (!self::$Session) {
-            self::$Session = new Session(self::getDBH(), eConfig::SESSION_TIMEOUT, eConfig::SESSION_LIFESPAN);
+            self::$Session = new Session(self::getDBH(), Config::SESSION_TIMEOUT, Config::SESSION_LIFESPAN);
         }
 
         return self::$Session;
@@ -140,12 +140,12 @@ class Factory
     public static function getDBH()
     {
         if (!isset(self::$DatabaseHandler)) {
-            $strDSN                = eConfig::DB_PROTOCOL . ":dbname=" . eConfig::DB_NAME . ";host=" . eConfig::DB_HOST . ";port=" . eConfig::DB_PORT;
-            self::$DatabaseHandler = new DatabaseHandler($strDSN, eConfig::DB_USER, eConfig::DB_PASSWORD, [
+            $strDSN                = Config::DB_PROTOCOL . ":dbname=" . Config::DB_NAME . ";host=" . Config::DB_HOST . ";port=" . Config::DB_PORT;
+            self::$DatabaseHandler = new DatabaseHandler($strDSN, Config::DB_USER, Config::DB_PASSWORD, [
                 PDO::ATTR_PERSISTENT => true,
                 PDO::ATTR_ERRMODE    => PDO::ERRMODE_EXCEPTION
             ]);
-            self::$DatabaseHandler->setDebug(eConfig::DB_DEBUG);
+            self::$DatabaseHandler->setDebug(Config::DB_DEBUG);
         }
 
         return self::$DatabaseHandler;

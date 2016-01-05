@@ -14,7 +14,7 @@ namespace Epsilon\Document;
 
 defined("EPSILON_EXEC") or die();
 
-use App\eConfig;
+use App\Config;
 use Epsilon\Factory;
 use Epsilon\Object\Object;
 
@@ -65,7 +65,7 @@ class Document extends Object
      */
     public function initialize()
     {
-        $this->setTitle(eConfig::SITE_NAME);
+        $this->setTitle(Config::SITE_NAME);
         $this->setTemplate();
     }
 

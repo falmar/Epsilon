@@ -12,6 +12,8 @@
 
 namespace Components\Site\Controllers;
 
+use App\Config;
+
 defined("EPSILON_EXEC") or die();
 
 /**
@@ -21,10 +23,11 @@ defined("EPSILON_EXEC") or die();
  */
 class Site extends \Components\Site\Site
 {
-    public function Index($ID)
+    public function Index()
     {
         $this->setSubTitle('Home', false);
-        $View = $this->getView('Home');
-        $View->setDocumentPosition();
+        $this->getView('Home', [
+            'SiteName' => Config::SITE_NAME
+        ])->setDocumentPosition();
     }
 }

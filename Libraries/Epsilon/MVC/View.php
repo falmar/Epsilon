@@ -30,47 +30,61 @@ class View extends Object
     protected $Variables;
     protected $VariablesByRef;
     protected $blPositionSet;
+    protected $blBuffer;
 
     /**
-     * @param string      $TemplateDir
-     * @param string      $Template
-     * @param null|string $Position
-     * @param null|mixed  $Variables
+     * @param string $TemplateDir
+     * @param string $Template
+     * @param string $Position
+     * @param array  $Variables
+     * @param bool   $Buffer
      */
-    public function __construct($TemplateDir, $Template, $Position = null, $Variables = null)
+    public function __construct($TemplateDir, $Template, $Position, $Variables = [], $Buffer = true)
     {
         parent::__construct([]);
         $this->TemplateDir    = $TemplateDir;
         $this->Template       = $Template;
         $this->Position       = $Position;
+        $this->blBuffer       = $Buffer;
         $this->Variables      = [];
         $this->VariablesByRef = [];
         $this->assign($Variables);
     }
 
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function render()
     {
         $this->checkExtension($this->Template);
-
         $File = $this->getPath() . $this->Template;
 
         if (!is_readable($File)) {
             throw new \Exception("ViewException: Can't read: " . $File);
         }
 
-        require($File);
+        if ($this->blBuffer) {
+            ob_start();
+            require($File);
+
+            return ob_get_clean();
+        } else {
+            require($File);
+
+            return '';
+        }
     }
 
     /**
      * @param $Template
+     * @return string
      * @throws \Exception
      */
-    public function renderPartial($Template)
+    protected function renderPartial($Template)
     {
         $this->checkExtension($Template);
-
         $File = $this->getPath() . $Template;
-
         if (!is_readable($File)) {
             throw new \Exception("ViewException: Can't read: " . $File);
         }
@@ -165,12 +179,9 @@ class View extends Object
     public function __toString()
     {
         try {
-            $this->render();
-
-            return "";
+            return $this->render();
         } catch (\Exception $e) {
             return $e->getMessage();
         }
-
     }
 }

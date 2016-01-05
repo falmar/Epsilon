@@ -14,7 +14,7 @@ namespace Epsilon\Language;
 
 defined("EPSILON_EXEC") or die();
 
-use App\eConfig;
+use App\Config;
 use Epsilon\Database\DatabaseHandler;
 use Epsilon\Factory;
 use Epsilon\IO\Input;
@@ -249,7 +249,7 @@ class Language extends ActiveRecord
 
     protected function setInSession()
     {
-        if (!eConfig::APP_DEBUG) {
+        if (!Config::APP_DEBUG) {
             $Language                    = [];
             $Language["arImportedFiles"] = $this->arImportedFiles;
             $Language["arStrings"]       = $this->arStrings;

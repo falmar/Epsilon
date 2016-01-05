@@ -14,7 +14,7 @@ namespace Epsilon\Environment;
 
 defined("EPSILON_EXEC") or die();
 
-use App\eConfig;
+use App\Config;
 use Epsilon\Factory;
 use Epsilon\IO\Input;
 use Epsilon\Object\Object;
@@ -94,7 +94,7 @@ class URI extends Object
 
         $this->InversePath = Input::getVar('r', Input::GET);
 
-        if (eConfig::PRETTY_URL && !$this->InversePath) {
+        if (Config::PRETTY_URL && !$this->InversePath) {
             $this->InversePath = strpos($this->Path, 'index.php') ? substr($this->Path, strpos($this->Path, 'index.php') + 9, strlen($this->Path)) : $this->Path;
         }
     }

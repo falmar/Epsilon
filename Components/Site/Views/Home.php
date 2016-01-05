@@ -12,7 +12,9 @@
 
 defined("EPSILON_EXEC") or die();
 
+/** @var \Epsilon\MVC\View $this */
+
 ?>
 <br>
-<h1 class="text-center">Welcome to Epsilon the PHP Framework!</h1>
+<h1 class="text-center">Welcome to <?php echo $this->getVar('SiteName'); ?>!</h1>
 <br>

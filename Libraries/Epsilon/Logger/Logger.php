@@ -14,7 +14,7 @@ namespace Epsilon\Logger;
 
 defined("EPSILON_EXEC") or die();
 
-use App\eConfig;
+use App\Config;
 use Epsilon\Factory;
 use Epsilon\Utility\Utility;
 use Psr\Log\AbstractLogger;
@@ -56,7 +56,7 @@ class Logger extends AbstractLogger
 
         $message = $this->interpolateMessage($message, $context);
 
-        if (eConfig::APP_DEBUG) {
+        if (Config::APP_DEBUG) {
             echo $message, PHP_EOL;
         }
 

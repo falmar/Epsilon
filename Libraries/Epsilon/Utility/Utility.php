@@ -14,7 +14,7 @@ namespace Epsilon\Utility;
 
 defined("EPSILON_EXEC") or die();
 
-use App\eConfig;
+use App\Config;
 use Epsilon\Factory;
 use Epsilon\IO\Input;
 use Epsilon\Object\Object;
@@ -24,7 +24,7 @@ use PDOException;
 /**
  * Class Utility
  *
- * @package Epsilon\Utility
+*@package Epsilon\Utility
  */
 class Utility
 {
@@ -137,7 +137,7 @@ class Utility
         if (is_integer($MaxPageSize)) {
             $PageSize = $MaxPageSize;
         } else {
-            $PageSize = eConfig::MAX_PAGE_SIZE;
+            $PageSize = Config::MAX_PAGE_SIZE;
         }
 
         $Paging = new Object([

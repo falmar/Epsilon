@@ -18,7 +18,7 @@ defined("EPSILON_EXEC") or die();
 /**
  * Class eConfig
  */
-class eConfig
+class Config
 {
     /** Site Config */
     const APPLICATION_ID     = "Site";

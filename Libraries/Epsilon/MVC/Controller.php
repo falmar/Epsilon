@@ -225,7 +225,7 @@ abstract class Controller extends ActiveRecord
     /**
      * Load the default params of the controller
      *
-*@return array
+     * @return array
      */
     protected function getDefaultParams()
     {
@@ -242,12 +242,13 @@ abstract class Controller extends ActiveRecord
     /**
      * get \Epsilon\MVC\View object corresponding to a template
      *
-     * @param string $Template set the template name or location CONTROLLER_NAME/Views/
-     * @param string $Position set the position of Document
+     * @param string $Template set the template name
      * @param array  $Variables
+     * @param string $Position set the position of Document
+     * @param bool   $Buffer
      * @return View
      */
-    protected function getView($Template, $Variables = [], $Position = null)
+    protected function getView($Template, $Variables = [], $Position = null, $Buffer = false)
     {
         if (!$this->View) {
             if (is_null($Position)) {
@@ -262,7 +263,7 @@ abstract class Controller extends ActiveRecord
                 $Template .= ".php";
             }
 
-            $this->View = new View($this->getViewPath(), $Template, $Position, $Variables);
+            $this->View = new View($this->getViewPath(), $Template, $Position, $Variables, $Buffer);
         }
 
         return $this->View;
