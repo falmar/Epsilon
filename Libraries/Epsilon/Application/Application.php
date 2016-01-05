@@ -170,13 +170,14 @@ abstract class Application extends Object
      * Redirect the Application
      * Calls the Router::getURL() method
      *
-     * @param string $URL
-     * @param array  $arQuery
+     * @param string $Route
+     * @param array  $Parameters
+     * @param null   $Fragment
      */
-    public function redirect($URL, $arQuery = [])
+    public function redirect($Route, $Parameters = [], $Fragment = null)
     {
         Factory::getEventManager()->dispatch("Application.onRedirect");
-        header("Location: " . Factory::getRouter()->getURL($URL, $arQuery));
+        header("Location: " . Factory::getRouter()->getURL($Route, $Parameters, $Fragment));
         exit();
     }
 

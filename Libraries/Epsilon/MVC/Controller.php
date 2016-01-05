@@ -223,9 +223,9 @@ abstract class Controller extends ActiveRecord
     }
 
     /**
-     * Load the XML and return the default params of the controller
+     * Load the default params of the controller
      *
-     * @return array
+*@return array
      */
     protected function getDefaultParams()
     {
@@ -242,12 +242,12 @@ abstract class Controller extends ActiveRecord
     /**
      * get \Epsilon\MVC\View object corresponding to a template
      *
-     * @param string $Template set the template name or location its CONTROLLER_NAME/Views/
+     * @param string $Template set the template name or location CONTROLLER_NAME/Views/
      * @param string $Position set the position of Document
      * @param array  $Variables
      * @return View
      */
-    protected function getView($Template = null, $Variables = [], $Position = null)
+    protected function getView($Template, $Variables = [], $Position = null)
     {
         if (!$this->View) {
             if (is_null($Position)) {
@@ -279,7 +279,7 @@ abstract class Controller extends ActiveRecord
     }
 
     /**
-     * @param null $File
+     * @param null|string|array $File
      */
     protected function setLanguageFile($File = null)
     {
@@ -397,8 +397,8 @@ abstract class Controller extends ActiveRecord
     /**
      * This is a shortcut to Factory::getDocument()->setSubTitle() method
      *
-     * @param           $SubTitle
-     * @param bool|TRUE $Language
+     * @param      $SubTitle
+     * @param bool $Language
      */
     protected function setSubTitle($SubTitle, $Language = true)
     {
@@ -450,5 +450,17 @@ abstract class Controller extends ActiveRecord
         }
 
         return $this->Models[$Name];
+    }
+
+    /**
+     * Shortcut method for Factory::getApplication()->redirect()
+     *
+     * @param string      $Route
+     * @param array       $Parameters
+     * @param null|string $Fragment
+     */
+    protected function redirect($Route, $Parameters = [], $Fragment = null)
+    {
+        Factory::getApplication()->redirect($Route, $Parameters, $Fragment);
     }
 }

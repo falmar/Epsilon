@@ -288,7 +288,7 @@ abstract class Router extends Object
     /**
      * TODO: rewrite method
      *
-*@return mixed
+     * @return mixed
      */
     public function getCurrentMenuID()
     {
