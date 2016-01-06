@@ -204,20 +204,19 @@ abstract class Template extends ActiveRecord
             $ContentType  = $eApplication->get("ContentType");
             $XHRequest    = $eApplication->get("XHRequest");
 
-            switch (strtolower($ContentType)) {
-                case "text/html":
-                    header('Content-type: text/html;');
-                    if ($XHRequest) {
-                        $View = $this->get("DefaultXHRTemplate");
-                    } else {
-                        $View = $this->get("DefaultTemplate");
-                    }
+            $ContentType = strtolower($ContentType);
 
-                    echo (new View($this->getViewPath(), $View, null, [
-                        'SystemMessages' => SystemMessage::getMessages()
-                    ]));
+            if ($ContentType === 'text/html') {
+                header('Content-type: text/html;');
+                if ($XHRequest) {
+                    $View = $this->get("DefaultXHRTemplate");
+                } else {
+                    $View = $this->get("DefaultTemplate");
+                }
 
-                    break;
+                echo (new View($this->getViewPath(), $View, null, [
+                    'SystemMessages' => SystemMessage::getMessages()
+                ]));
             }
 
             $this->Rendered = true;

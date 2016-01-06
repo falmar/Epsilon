@@ -71,30 +71,16 @@ class Output
      */
     private static function cleanValueByType(&$Value, $ClearingMethod)
     {
-        switch ($ClearingMethod) {
-            case self::HTML:
-                $Value = html_entity_decode($Value, ENT_QUOTES);
-                break;
-            case self::HTML_SLASHES:
-                $Value = html_entity_decode(stripslashes($Value), ENT_QUOTES);
-                break;
-            case self::JSON:
-                $Value = json_encode($Value);
-                break;
-            case self::UTF8:
-                $Value = utf8_decode($Value);
-                break;
-            case self::DATE:
-            case self::FLOAT:
-            case self::INT:
-            case self::BOOL:
-                $Value = Input::cleanVar($Value, $ClearingMethod);
-                break;
-            case self::NONE:
-                break;
-            default:
-                $Value = preg_replace('/[^A-Za-z0-9_\!\?\=\* \&\@\:\(\)\\+\.\,\/\s\-]/', '', $Value);
-                break;
+        if ($ClearingMethod === self::HTML) {
+            $Value = html_entity_decode($Value, ENT_QUOTES);
+        } elseif ($ClearingMethod === self::HTML_SLASHES) {
+            $Value = html_entity_decode(addslashes($Value), ENT_QUOTES);
+        } elseif ($ClearingMethod === self::JSON) {
+            $Value = json_encode($Value);
+        } elseif ($ClearingMethod === self::UTF8) {
+            $Value = utf8_decode($Value);
+        } else {
+            $Value = Input::cleanVar($Value, $ClearingMethod);
         }
     }
 }

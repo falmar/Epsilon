@@ -48,17 +48,12 @@ class Input
      */
     public static function getVar($key, $HTTP_Method = null, $ClearingMethod = null, $ClearArrayKeys = [])
     {
-        switch ($HTTP_Method) {
-            case self::GET:
-                $RequestMethod = &$_GET;
-                break;
-            case self::POST:
-                $RequestMethod = &$_POST;
-                break;
-            case self::REQUEST:
-            default:
-                $RequestMethod = &$_REQUEST;
-                break;
+        if ($HTTP_Method === self::GET) {
+            $RequestMethod = &$_GET;
+        } elseif ($HTTP_Method === self::POST) {
+            $RequestMethod = &$_POST;
+        } else {
+            $RequestMethod = &$_REQUEST;
         }
 
         if (isset($RequestMethod[$key])) {
@@ -112,36 +107,26 @@ class Input
      */
     private static function cleanValueByType(&$Value, $ClearingMethod)
     {
-        switch ($ClearingMethod) {
-            case self::HTML:
-                $Value = htmlentities($Value, ENT_QUOTES);
-                break;
-            case self::HTML_SLASHES:
-                $Value = htmlentities(addslashes($Value), ENT_QUOTES);
-                break;
-            case self::JSON:
-                $Value = json_decode($Value);
-                break;
-            case self::UTF8:
-                $Value = utf8_encode($Value);
-                break;
-            case self::DATE:
-                $Value = date("Y-m-d h:i:s", strtotime($Value));
-                break;
-            case self::FLOAT:
-                $Value = floatval($Value);
-                break;
-            case self::INT:
-                $Value = intval($Value);
-                break;
-            case self::BOOL:
-                $Value = boolval($Value);
-                break;
-            case self::NONE:
-                break;
-            default:
-                $Value = preg_replace('/[^A-Za-z0-9_\!\?\=\* \&\@\:\(\)\\+\.\,\/\s\-]/', '', $Value);
-                break;
+        if ($ClearingMethod === self::HTML) {
+            $Value = htmlentities($Value, ENT_QUOTES);
+        } elseif ($ClearingMethod === self::HTML_SLASHES) {
+            $Value = htmlentities(addslashes($Value), ENT_QUOTES);
+        } elseif ($ClearingMethod === self::JSON) {
+            $Value = json_decode($Value);
+        } elseif ($ClearingMethod === self::UTF8) {
+            $Value = utf8_encode($Value);
+        } elseif ($ClearingMethod === self::DATE) {
+            $Value = date("Y-m-d h:i:s", strtotime($Value));
+        } elseif ($ClearingMethod === self::FLOAT) {
+            $Value = floatval($Value);
+        } elseif ($ClearingMethod === self::INT) {
+            $Value = intval($Value);
+        } elseif ($ClearingMethod === self::BOOL) {
+            $Value = boolval($Value);
+        } elseif ($ClearingMethod === self::NONE) {
+
+        } else {
+            $Value = preg_replace('/[^A-Za-z0-9_\!\?\=\* \&\@\:\(\)\\+\.\,\/\s\-]/', '', $Value);
         }
     }
 }

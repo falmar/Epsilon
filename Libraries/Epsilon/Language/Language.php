@@ -215,20 +215,15 @@ class Language extends ActiveRecord
             $File = $Path . $DefaultCode . DS . $DefaultCode . "." . $FileName;
 
             if (is_readable($File)) {
-                switch (strtolower(pathinfo($FileName, PATHINFO_EXTENSION))) {
-                    case "xml":
-                        $XML_Language = simplexml_load_file($File);
 
-                        if (!isset($XML_Language->Strings)) {
-                            break;
-                        }
-
+                if (strtolower(pathinfo($FileName, PATHINFO_EXTENSION)) == 'xml') {
+                    $XML_Language = simplexml_load_file($File);
+                    if (isset($XML_Language->Strings)) {
                         $this->arImportedFiles[$Path . $FileName] = 1;
-
                         foreach ($XML_Language->Strings->String as $String) {
                             $this->arStrings[(string)$String["key"]] = (string)$String;
                         }
-                        break;
+                    }
                 }
 
                 if (isset($this->arImportedFiles[$Path . $FileName])) {
