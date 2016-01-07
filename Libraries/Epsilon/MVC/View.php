@@ -52,10 +52,11 @@ class View extends Object
     }
 
     /**
+     * @param bool $Buffer
      * @return string
      * @throws \Exception
      */
-    public function render()
+    public function render($Buffer = false)
     {
         $this->checkExtension($this->Template);
         $File = $this->getPath() . $this->Template;
@@ -64,7 +65,7 @@ class View extends Object
             throw new \Exception("ViewException: Can't read: " . $File);
         }
 
-        if ($this->blBuffer) {
+        if ($this->blBuffer || $Buffer) {
             ob_start();
             require($File);
 
