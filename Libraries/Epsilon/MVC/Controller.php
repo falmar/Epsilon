@@ -64,6 +64,7 @@ abstract class Controller extends ActiveRecord
     {
         parent::__construct($objPDO, $ID_Data, $ResultSet);
         $this->ControllerType = $this->defineControllerType();
+        $this->View           = [];
     }
 
     /**
@@ -250,7 +251,7 @@ abstract class Controller extends ActiveRecord
      */
     protected function getView($Template, $Variables = [], $Position = null, $Buffer = false)
     {
-        if (!$this->View) {
+        if (!isset($this->View[$Position])) {
             if (is_null($Position)) {
                 if (Factory::getApplication()->get("XHRequest")) {
                     $Position = "XHRequest";
@@ -263,10 +264,10 @@ abstract class Controller extends ActiveRecord
                 $Template .= ".php";
             }
 
-            $this->View = new View($this->getViewPath(), $Template, $Position, $Variables, $Buffer);
+            $this->View[$Position] = new View($this->getViewPath(), $Template, $Position, $Variables, $Buffer);
         }
 
-        return $this->View;
+        return $this->View[$Position];
     }
 
 
