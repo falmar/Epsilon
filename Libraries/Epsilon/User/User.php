@@ -116,7 +116,9 @@ class User extends ActiveRecord
             if (Factory::getSession()->get("User")) {
                 self::$Instance = new User(Factory::getDBH(), Factory::getSession()->get("User"));
             } else {
-                self::$Instance = new User(Factory::getDBH());
+                self::$Instance = new User(Factory::getDBH(), [
+                    'Name' => Factory::getLanguage()->_('GUEST')
+                ]);
                 self::$Instance->setGuest(true);
             }
         }

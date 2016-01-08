@@ -9,6 +9,7 @@
     <AuthorEmail>daviddlavier@gmail.com</AuthorEmail>
 
     <Strings>
+        <String key="GUEST">Guest</String>
         <String key="SEND">Send</String>
         <String key="VIEW">View</String>
         <String key="EDIT">Edit</String>
