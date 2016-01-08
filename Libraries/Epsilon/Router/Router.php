@@ -252,7 +252,7 @@ abstract class Router extends Object
                         }
                     }
 
-                    $r = strtr($rKey, $replace);
+                    $r = str_replace(array_keys($replace), array_values($replace), $rKey);
 
                     if (preg_match($this->getRuleRegex($rKey), $r)) {
                         if ($Match >= $HighestMatch) {
