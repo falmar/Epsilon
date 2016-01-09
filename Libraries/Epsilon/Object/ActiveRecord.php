@@ -77,6 +77,14 @@ abstract class ActiveRecord
     protected $arRelationKeys;
 
     /**
+     * true or false if inner properties have been set
+     *
+     * @var bool
+     */
+    protected $blKeysSet;
+    protected $arKeys;
+
+    /**
      * @var bool $blIsLoaded         true or false if $arTableMap as been loaded or not
      * @var bool $blIsLazyLoaded     true or false if $arTableMap as been loaded or not
      * @var bool $blIsRelationLoaded true or false if $arLazyTableMap as been loaded or not
@@ -137,6 +145,7 @@ abstract class ActiveRecord
         $this->blForDeletion      = false;
         $this->blForceDeletion    = false;
         $this->arModifiedFields   = [];
+        $this->setInnerKeys();
 
         /**
          * IF $ID_Data is a numeric | string variable value set as DataBoundObject ID
@@ -155,7 +164,6 @@ abstract class ActiveRecord
      */
     protected function load($map = "arTableMap")
     {
-
         if (isset($this->ID)) {
 
             if ($map === 'arTableMap') {
@@ -318,6 +326,30 @@ abstract class ActiveRecord
         return $Result;
     }
 
+    private function setInnerKeys()
+    {
+        if (!$this->blKeysSet) {
+            $this->arKeys = [];
+            $maps         = [
+                "arTableMap",
+                "arLazyTableMap",
+                'arRelationKeys'
+            ];
+
+            foreach ($maps as $map) {
+                if ($map === 'arRelationKeys') {
+                    $actualMap = $this->getRelationKeys();
+                } else {
+                    $actualMap = $this->$map;
+                }
+
+                foreach ($actualMap as $k => $v) {
+                    $this->arKeys[$k] = $v;
+                }
+            }
+        }
+    }
+
     /**
      * @param $Data
      * @param $blResultSet
@@ -325,52 +357,7 @@ abstract class ActiveRecord
     public function setProperties($Data, $blResultSet)
     {
         foreach ($Data as $key => $value) {
-
-            $maps = [
-                "arTableMap",
-                "arLazyTableMap",
-                "arRelationMap"
-            ];
-
-            foreach ($maps as $map) {
-
-                $actualKey = null;
-                $actualMap = $this->$map;
-
-                if ($map == "arRelationMap") {
-                    $this->setProperty($this->getRelationKeys(), $key, $value, $blResultSet);
-                } else {
-                    $this->setProperty($actualMap, $key, $value, $blResultSet);
-                }
-            }
-        }
-    }
-
-    /**
-     * @param $actualMap
-     * @param $key
-     * @param $value
-     * @param $blResultSet
-     */
-    private function setProperty($actualMap, $key, $value, $blResultSet)
-    {
-
-        $actualKey = null;
-        if (property_exists($this, $key)) {
-            $actualKey = $key;
-        } elseif (array_key_exists($key, $actualMap)) {
-            $actualKey = $actualMap[$key];
-        } elseif (in_array($key, $actualMap)) {
-            $actualKey = $key;
-        }
-
-        /** If the key exist set the value */
-        if ($actualKey) {
-            if ($blResultSet && !$this->modifiedProperty($actualKey)) {
-                $this->set($actualKey, $value, $blResultSet);
-            } elseif (!$blResultSet) {
-                $this->set($actualKey, $value, $blResultSet);
-            }
+            $this->set($key, $value, $blResultSet);
         }
     }
 
@@ -403,7 +390,6 @@ abstract class ActiveRecord
         }
 
         return new Object($Object);
-
     }
 
     /**
@@ -413,14 +399,17 @@ abstract class ActiveRecord
      */
     public function set($Key, $Value, $ResultSet = false)
     {
-        $map = $this->propertyExist($Key);
-        if ($map) {
-            $this->$Key = ($Value !== '') ? $Value : null;
-            if ($map != "arRelationMap" && $Key != "ID" && !$ResultSet) {
-                $this->arModifiedFields[$Key] = true;
+        if (isset($this->arKeys[$Key])) {
+            $Key = $this->arKeys[$Key];
+        }
+
+        if (in_array($Key, $this->arKeys)) {
+            if (!$ResultSet || ($ResultSet && !array_key_exists($Key, $this->arModifiedFields))) {
+                $this->$Key = ($Value !== '') ? $Value : null;
+                if ($Key != "ID" && !$ResultSet && !in_array($Key, $this->getRelationKeys())) {
+                    $this->arModifiedFields[$Key] = true;
+                }
             }
-        } elseif (property_exists($this, $Key)) {
-            $this->$Key = ($Value !== '') ? $Value : null;
         }
     }
 
@@ -456,7 +445,7 @@ abstract class ActiveRecord
     {
         if (property_exists($this, $Key)) {
             return $this->$Key;
-        } elseif ($this->load($this->propertyExist($Key))) {
+        } elseif ($this->load($this->getPropertyMap($Key))) {
             return $this->$Key;
         } else {
             return null;
@@ -473,34 +462,21 @@ abstract class ActiveRecord
     }
 
     /**
-     * @param $key
-     * @return false|string
+     * @param string $Property
+     * @return bool
+     * @internal param string $map
      */
-    private function propertyExist($key)
+    private function getPropertyMap($Property)
     {
         foreach (['arTableMap', 'arLazyTableMap', 'arRelationMap'] as $map) {
-            if ($this->checkPropertiesMap($key, $map)) {
-                return $map;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param string $Property
-     * @param string $map
-     * @return bool
-     */
-    private function checkPropertiesMap($Property, $map)
-    {
-        if ($map === "arTableMap" || $map === "arLazyTableMap") {
-            if (in_array($Property, $this->$map)) {
-                return true;
-            }
-        } elseif ($map === "arRelationMap") {
-            if (in_array($Property, $this->getRelationKeys())) {
-                return true;
+            if ($map === "arTableMap" || $map === "arLazyTableMap") {
+                if (in_array($Property, $this->$map)) {
+                    return $map;
+                }
+            } elseif ($map === "arRelationMap") {
+                if (in_array($Property, $this->getRelationKeys())) {
+                    return $map;
+                }
             }
         }
 
