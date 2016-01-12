@@ -12,6 +12,7 @@
 
 namespace Epsilon\IO;
 
+defined('EPSILON_EXEC') or die();
 
 class Output
 {

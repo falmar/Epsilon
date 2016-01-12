@@ -12,7 +12,7 @@
 
 namespace Epsilon\Document;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use App\Config;
 use Epsilon\Factory;
@@ -102,10 +102,10 @@ class Document extends Object
     {
         $eApplication = Factory::getApplication();
         $Template     = Factory::getTemplate();
-        $ContentType  = $eApplication->get("ContentType");
-        $XHRequest    = $eApplication->get("XHRequest");
+        $ContentType  = $eApplication->get('ContentType');
+        $XHRequest    = $eApplication->get('XHRequest');
 
-        if ($ContentType == "text/html" && !$XHRequest) {
+        if ($ContentType == 'text/html' && !$XHRequest) {
             foreach ($Template->getPositions() as $p) {
                 $this->setPosition($p);
             }
@@ -118,7 +118,7 @@ class Document extends Object
                 $this->setStyleSheet($v);
             }
         } else {
-            $this->setPosition("XHRequest");
+            $this->setPosition('XHRequest');
         }
     }
 

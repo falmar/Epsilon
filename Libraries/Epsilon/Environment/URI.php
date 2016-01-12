@@ -12,7 +12,7 @@
 
 namespace Epsilon\Environment;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use App\Config;
 use Epsilon\Factory;
@@ -55,14 +55,14 @@ class URI extends Object
     public static function getInstance()
     {
         if (!isset(self::$Instance)) {
-            if (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") {
-                $https = "https://";
+            if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+                $https = 'https://';
             } else {
-                $https = "http://";
+                $https = 'http://';
             }
 
             if (!Factory::getApplication()->isCLI()) {
-                if ($_SERVER["PHP_SELF"] && isset($_SERVER["REQUEST_URI"])) {
+                if ($_SERVER['PHP_SELF'] && isset($_SERVER['REQUEST_URI'])) {
                     $uri = $https . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
                 } else {
                     $uri = $https . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
@@ -86,11 +86,11 @@ class URI extends Object
     public function parse($URI)
     {
         $parts          = parse_url($URI);
-        $this->Scheme   = isset($parts["scheme"]) ? $parts["scheme"] . "://" : null;
-        $this->Host     = isset($parts["host"]) ? $parts["host"] : null;
-        $this->Path     = isset($parts["path"]) ? $parts["path"] : null;
-        $this->Query    = isset($parts["query"]) ? $parts["query"] : null;
-        $this->Fragment = isset($parts["fragment"]) ? $parts["fragment"] : null;
+        $this->Scheme   = isset($parts['scheme']) ? $parts['scheme'] . '://' : null;
+        $this->Host     = isset($parts['host']) ? $parts['host'] : null;
+        $this->Path     = isset($parts['path']) ? $parts['path'] : null;
+        $this->Query    = isset($parts['query']) ? $parts['query'] : null;
+        $this->Fragment = isset($parts['fragment']) ? $parts['fragment'] : null;
 
         $this->InversePath = Input::getVar('r', Input::GET);
 
@@ -154,8 +154,8 @@ class URI extends Object
     {
         if ($this->getPath() == $this->getInversePath()) {
             return $this->getServer() . '/';
-        } elseif (strpos($this->getPath(), "index.php")) {
-            return $this->getServer() . substr($this->getPath(), 0, strpos($this->getPath(), "index.php"));
+        } elseif (strpos($this->getPath(), 'index.php')) {
+            return $this->getServer() . substr($this->getPath(), 0, strpos($this->getPath(), 'index.php'));
         } else {
             return $this->getServer() . $this->getPath();
         }

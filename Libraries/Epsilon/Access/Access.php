@@ -12,7 +12,7 @@
 
 namespace Epsilon\Access;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use Epsilon\Factory;
 use Epsilon\Object\Object;
@@ -110,9 +110,9 @@ class Access extends Object
     {
         if (!$this->assetRootID) {
             $dbh  = Factory::getDBH();
-            $stmt = $dbh->prepare("SELECT AssetID FROM Asset WHERE ApplicationID = :AppID AND NodeLevel = 0");
-            $stmt->bindValue(":AppID", Factory::getApplication()->getApplicationID(), PDO::PARAM_STR);
-            $stmt->bindColumn("AssetID", $AssetID, PDO::PARAM_INT);
+            $stmt = $dbh->prepare('SELECT AssetID FROM Asset WHERE ApplicationID = :AppID AND NodeLevel = 0');
+            $stmt->bindValue(':AppID', Factory::getApplication()->getApplicationID(), PDO::PARAM_STR);
+            $stmt->bindColumn('AssetID', $AssetID, PDO::PARAM_INT);
             try {
                 $stmt->execute();
                 $stmt->fetch();
@@ -134,17 +134,17 @@ class Access extends Object
      */
     protected function getAssetRules($Asset, $Recursive = false)
     {
-        $select = $Recursive ? "b.Rules" : "a.Rules";
+        $select = $Recursive ? 'b.Rules' : 'a.Rules';
 
-        $group = $Recursive ? "GROUP BY b.AssetID, b.Rules, b.lft" : "a.AssetID, a.Rules, a.lft";
+        $group = $Recursive ? 'GROUP BY b.AssetID, b.Rules, b.lft' : 'a.AssetID, a.Rules, a.lft';
 
-        $where = !is_string($Asset) ? "a.AssetID = :AssetID" : "a.Asset = :AssetID";
+        $where = !is_string($Asset) ? 'a.AssetID = :AssetID' : 'a.Asset = :AssetID';
 
-        $where .= " AND (a.ApplicationID = :AppID AND b.ApplicationID = :AppID)";
+        $where .= ' AND (a.ApplicationID = :AppID AND b.ApplicationID = :AppID)';
 
         if ($Recursive) {
-            $join  = "LEFT JOIN Asset AS b ON b.lft <= a.lft AND b.rgt >= a.rgt";
-            $order = "ORDER BY b.lft";
+            $join  = 'LEFT JOIN Asset AS b ON b.lft <= a.lft AND b.rgt >= a.rgt';
+            $order = 'ORDER BY b.lft';
         } else {
             $join  = null;
             $order = null;
@@ -153,8 +153,8 @@ class Access extends Object
         $dbh  = Factory::getDBH();
         $stmt = $dbh->prepare("SELECT $select FROM Asset as a $join WHERE $where $group $order");
 
-        $stmt->bindValue(":AssetID", $Asset, PDO::PARAM_STR);
-        $stmt->bindValue(":AppID", Factory::getApplication()->getApplicationID(), PDO::PARAM_STR);
+        $stmt->bindValue(':AssetID', $Asset, PDO::PARAM_STR);
+        $stmt->bindValue(':AppID', Factory::getApplication()->getApplicationID(), PDO::PARAM_STR);
 
         $arRules = [];
 
@@ -180,7 +180,7 @@ class Access extends Object
     {
         if (!$this->arUserGroups) {
             $dbh  = Factory::getDBH();
-            $stmt = $dbh->prepare("SELECT UserGroupID,ParentID,0 AS lft,0 AS rgt FROM UserGroup ORDER BY lft,ParentID");
+            $stmt = $dbh->prepare('SELECT UserGroupID,ParentID,0 AS lft,0 AS rgt FROM UserGroup ORDER BY lft,ParentID');
             try {
                 $stmt->execute();
                 $this->arUserGroups = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -233,7 +233,7 @@ class Access extends Object
      */
     public function getGroupsByUser($UserID, $Recursive = true)
     {
-        $storedID = $UserID . ":" . (int)$Recursive;
+        $storedID = $UserID . ':' . (int)$Recursive;
 
         $GuestUserGroup = 1;
 
@@ -243,20 +243,20 @@ class Access extends Object
             } else {
                 $dbh = Factory::getDBH();
 
-                $select = $Recursive ? "b.UserGroupID" : "a.UserGroupID";
+                $select = $Recursive ? 'b.UserGroupID' : 'a.UserGroupID';
 
                 if ($Recursive) {
-                    $join = "LEFT JOIN UserGroup as b ON b.lft <= a.lft AND b.rgt >= a.rgt";
+                    $join = 'LEFT JOIN UserGroup as b ON b.lft <= a.lft AND b.rgt >= a.rgt';
                 } else {
                     $join = null;
                 }
 
                 if (!$UserID) {
                     $stmt = $dbh->prepare("SELECT $select FROM UserGroup AS a $join WHERE a.UserGroupID = :GroupID");
-                    $stmt->bindValue(":GroupID", $GuestUserGroup, PDO::PARAM_INT);
+                    $stmt->bindValue(':GroupID', $GuestUserGroup, PDO::PARAM_INT);
                 } else {
                     $stmt = $dbh->prepare("SELECT $select FROM UserGroupMap as map LEFT JOIN UserGroup as a ON a.UserGroupID = map.UserGroupID $join WHERE map.UserID = :UserID");
-                    $stmt->bindValue(":UserID", $UserID, PDO::PARAM_INT);
+                    $stmt->bindValue(':UserID', $UserID, PDO::PARAM_INT);
                 }
 
                 try {
@@ -286,7 +286,7 @@ class Access extends Object
 
             $dbh = Factory::getDBH();
 
-            $stmt = $dbh->prepare("SELECT AccessLevelID, Rules FROM AccessLevel");
+            $stmt = $dbh->prepare('SELECT AccessLevelID, Rules FROM AccessLevel');
 
             try {
                 $stmt->execute();

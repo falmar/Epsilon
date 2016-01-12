@@ -12,7 +12,7 @@
 
 namespace Epsilon\User;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use Epsilon\Factory;
 use Epsilon\Object\ActiveRecord;
@@ -27,10 +27,10 @@ use PDOException;
  */
 class SystemMessage extends ActiveRecord
 {
-    const MSG_INFO    = "primary";
-    const MSG_SUCCESS = "success";
-    const MSG_WARNING = "warning";
-    const MSG_ERROR   = "alert";
+    const MSG_INFO    = 'primary';
+    const MSG_SUCCESS = 'success';
+    const MSG_WARNING = 'warning';
+    const MSG_ERROR   = 'alert';
     protected static $arSystemMessages        = [];
     protected static $arSystemMessagesElement = [];
     protected static $blAssignedMessages      = false;
@@ -41,8 +41,8 @@ class SystemMessage extends ActiveRecord
     protected function defineTableName()
     {
         return [
-            "SystemMessage",
-            "esm"
+            'SystemMessage',
+            'esm'
         ];
     }
 
@@ -52,14 +52,14 @@ class SystemMessage extends ActiveRecord
     protected function defineTableMap()
     {
         return [
-            "SystemMessageID" => "ID",
-            "UserID"          => "UserID",
-            "SessionID"       => "SessionID",
-            "Type"            => "Type",
-            "Message"         => "Message",
-            "Element"         => "Element",
-            "Viewed"          => "Viewed",
-            "RegisteredDate"  => "RegisteredDate"
+            'SystemMessageID' => 'ID',
+            'UserID'          => 'UserID',
+            'SessionID'       => 'SessionID',
+            'Type'            => 'Type',
+            'Message'         => 'Message',
+            'Element'         => 'Element',
+            'Viewed'          => 'Viewed',
+            'RegisteredDate'  => 'RegisteredDate'
         ];
     }
 
@@ -91,7 +91,7 @@ class SystemMessage extends ActiveRecord
     public function setViewed($Bool)
     {
         try {
-            $this->set("Viewed", $Bool);
+            $this->set('Viewed', $Bool);
             $this->save();
         } catch (PDOException $e) {
             Factory::getDBH()->catchException($e);
@@ -114,13 +114,13 @@ class SystemMessage extends ActiveRecord
         try {
 
             $Message = new SystemMessage(Factory::getDBH(), [
-                "UserID"         => Factory::getUser()->get("ID"),
-                "SessionID"      => Factory::getSession()->getPHP_SessionID(),
-                "Element"        => $Element,
-                "Message"        => $Message,
-                "Type"           => $Type,
-                "Viewed"         => 0,
-                "RegisteredDate" => Utility::getDateForDB()
+                'UserID'         => Factory::getUser()->get('ID'),
+                'SessionID'      => Factory::getSession()->getPHP_SessionID(),
+                'Element'        => $Element,
+                'Message'        => $Message,
+                'Type'           => $Type,
+                'Viewed'         => 0,
+                'RegisteredDate' => Utility::getDateForDB()
             ], false);
 
             $Message->save();
@@ -143,9 +143,9 @@ class SystemMessage extends ActiveRecord
             $stmt = $dbh->prepare("SELECT SystemMessageID,Type,Message FROM SystemMessage WHERE (Element = :Element OR Element = '_system' OR Element = '_DBH') AND (UserID = :UserID OR SessionID = :SessionID) AND Viewed = 0");
 
             try {
-                $stmt->bindValue(":Element", $Element, PDO::PARAM_STR);
-                $stmt->bindValue(":UserID", Factory::getUser()->get("ID"), PDO::PARAM_INT);
-                $stmt->bindValue(":SessionID", Factory::getSession()->getPHP_SessionID());
+                $stmt->bindValue(':Element', $Element, PDO::PARAM_STR);
+                $stmt->bindValue(':UserID', Factory::getUser()->get('ID'), PDO::PARAM_INT);
+                $stmt->bindValue(':SessionID', Factory::getSession()->getPHP_SessionID());
                 $stmt->execute();
                 foreach ($stmt->fetchAll(PDO::FETCH_OBJ) as $Message) {
                     array_push(self::$arSystemMessages, new SystemMessage($dbh, $Message));

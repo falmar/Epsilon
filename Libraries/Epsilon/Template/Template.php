@@ -12,7 +12,7 @@
 
 namespace Epsilon\Template;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use Epsilon\Factory;
 use Epsilon\IO\Input;
@@ -49,8 +49,8 @@ abstract class Template extends ActiveRecord
     protected function defineTableName()
     {
         return [
-            "Template",
-            "tpl"
+            'Template',
+            'tpl'
         ];
     }
 
@@ -60,11 +60,11 @@ abstract class Template extends ActiveRecord
     protected function defineTableMap()
     {
         return [
-            "TemplateID"    => "ID",
-            "ApplicationID" => "ApplicationID",
-            "Title"         => "Title",
-            "Template"      => "Template",
-            "Root"          => "Root"
+            'TemplateID'    => 'ID',
+            'ApplicationID' => 'ApplicationID',
+            'Title'         => 'Title',
+            'Template'      => 'Template',
+            'Root'          => 'Root'
         ];
     }
 
@@ -74,7 +74,7 @@ abstract class Template extends ActiveRecord
     protected function defineLazyTableMap()
     {
         return [
-            "Params" => "Params"
+            'Params' => 'Params'
         ];
     }
 
@@ -133,21 +133,21 @@ abstract class Template extends ActiveRecord
 
             $dbh = Factory::getDBH();
 
-            if (Input::getVar("TemplateID", "REQUEST")) {
-                $TemplateID = Input::getVar("TemplateID", "REQUEST");
-            } elseif (Factory::getCookie()->get("TemplateID")) {
-                $TemplateID = Factory::getCookie()->get("TemplateID");
+            if (Input::getVar('TemplateID', 'REQUEST')) {
+                $TemplateID = Input::getVar('TemplateID', 'REQUEST');
+            } elseif (Factory::getCookie()->get('TemplateID')) {
+                $TemplateID = Factory::getCookie()->get('TemplateID');
             } else {
                 $TemplateID = null;
             }
 
             if ($TemplateID) {
 
-                $stmt = $dbh->prepare("SELECT * FROM Template WHERE TemplateID = :TemplateID AND ApplicationID = :AppID");
+                $stmt = $dbh->prepare('SELECT * FROM Template WHERE TemplateID = :TemplateID AND ApplicationID = :AppID');
 
                 try {
-                    $stmt->bindValue(":AppID", Factory::getApplication()->getApplicationID(), PDO::PARAM_STR);
-                    $stmt->bindValue(":TemplateID", $TemplateID, PDO::PARAM_INT);
+                    $stmt->bindValue(':AppID', Factory::getApplication()->getApplicationID(), PDO::PARAM_STR);
+                    $stmt->bindValue(':TemplateID', $TemplateID, PDO::PARAM_INT);
                     $stmt->execute();
                     $rst = $stmt->fetch(PDO::FETCH_OBJ);
                     if (is_object($rst)) {
@@ -162,8 +162,8 @@ abstract class Template extends ActiveRecord
             }
 
             if (!self::$Instance instanceof Template) {
-                $stmt = $dbh->prepare("SELECT * FROM Template WHERE ApplicationID = :AppID AND Root = 1");
-                $stmt->bindValue(":AppID", Factory::getApplication()->getApplicationID(), PDO::PARAM_STR);
+                $stmt = $dbh->prepare('SELECT * FROM Template WHERE ApplicationID = :AppID AND Root = 1');
+                $stmt->bindValue(':AppID', Factory::getApplication()->getApplicationID(), PDO::PARAM_STR);
                 try {
                     $stmt->execute();
                     $rst = $stmt->fetch(PDO::FETCH_OBJ);
@@ -177,7 +177,7 @@ abstract class Template extends ActiveRecord
                 }
 
                 if (!self::$Instance) {
-                    Factory::getLogger()->emergency("No Template found in Database exiting...");
+                    Factory::getLogger()->emergency('No Template found in Database exiting...');
                 }
             }
         }
@@ -191,7 +191,7 @@ abstract class Template extends ActiveRecord
     public function getPath()
     {
         if (!isset($this->Path)) {
-            $this->Path = TEMPLATE_PATH . $this->get("Template") . DS;
+            $this->Path = TEMPLATE_PATH . $this->get('Template') . DS;
         }
 
         return $this->Path;
@@ -201,17 +201,17 @@ abstract class Template extends ActiveRecord
     {
         if (!$this->Rendered) {
             $eApplication = Factory::getApplication();
-            $ContentType  = $eApplication->get("ContentType");
-            $XHRequest    = $eApplication->get("XHRequest");
+            $ContentType  = $eApplication->get('ContentType');
+            $XHRequest    = $eApplication->get('XHRequest');
 
             $ContentType = strtolower($ContentType);
 
             if ($ContentType === 'text/html') {
                 header('Content-type: text/html;');
                 if ($XHRequest) {
-                    $View = $this->get("DefaultXHRTemplate");
+                    $View = $this->get('DefaultXHRTemplate');
                 } else {
-                    $View = $this->get("DefaultTemplate");
+                    $View = $this->get('DefaultTemplate');
                 }
 
                 echo (new View($this->getViewPath(), $View, null, [
@@ -240,7 +240,7 @@ abstract class Template extends ActiveRecord
      */
     public function getViewPath()
     {
-        return $this->getPath() . "Views" . DS;
+        return $this->getPath() . 'Views' . DS;
     }
 
     /**
@@ -330,7 +330,7 @@ abstract class Template extends ActiveRecord
         $Language   = null;
         $Properties = $this->defineProperties();
         $eLang      = Factory::getLanguage();
-        $Code       = $eLang->get("Code");
+        $Code       = $eLang->get('Code');
 
         if (is_string($File) && !empty($File)) {
             $File = [$File];
@@ -364,12 +364,12 @@ abstract class Template extends ActiveRecord
                 if ($isArray) {
                     foreach ($File as $f) {
                         if ($f == (string)$lang) {
-                            $eLang->addFile((string)$lang, $this->getPath() . "Language" . DS, $Code);
+                            $eLang->addFile((string)$lang, $this->getPath() . 'Language' . DS, $Code);
                             break;
                         }
                     }
                 } else {
-                    $eLang->addFile((string)$lang, $this->getPath() . "Language" . DS, $Code);
+                    $eLang->addFile((string)$lang, $this->getPath() . 'Language' . DS, $Code);
                 }
             }
         }

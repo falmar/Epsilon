@@ -12,7 +12,7 @@
 
 namespace Epsilon\Object;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use Epsilon\Database\Debug;
 use Epsilon\User\SystemMessage;
@@ -62,9 +62,9 @@ abstract class ActiveRecord
 
     /**
      * arRelationMap contain the properties|fields of the database table directly related by ForeignKey
-     * which are "read only" by ActiveRecord
+     * which are 'read only' by ActiveRecord
      *
-     * @var array $arRelationMap
+*@var array $arRelationMap
      */
     protected $arRelationMap;
 
@@ -162,7 +162,7 @@ abstract class ActiveRecord
      * @param string $map
      * @return bool
      */
-    protected function load($map = "arTableMap")
+    protected function load($map = 'arTableMap')
     {
         if (isset($this->ID)) {
 
@@ -180,23 +180,23 @@ abstract class ActiveRecord
                 return true;
             }
 
-            $ssql = "SELECT ";
+            $ssql = 'SELECT ';
 
             foreach ($this->$map as $Key => $Value) {
                 if (is_array($Value) && count($Value) > 3) {
                     $tableAlias = $Value[2];
                     $arMap      = $Value[4];
                     foreach ($arMap as $k => $v) {
-                        $ssql .= $tableAlias . "." . $k . " as $v,";
+                        $ssql .= $tableAlias . '.' . $k . ' as $v,';
                     }
                 } else {
-                    $ssql .= $this->getTableNameAlias() . "." . $Key . ",";
+                    $ssql .= $this->getTableNameAlias() . '.' . $Key . ',';
                 }
             }
 
             $ssql = substr($ssql, 0, strlen($ssql) - 1);
 
-            $ssql .= " FROM " . $this->getTableName() . " " . $this->getTableNameAlias() . " ";
+            $ssql .= ' FROM ' . $this->getTableName() . ' ' . $this->getTableNameAlias() . ' ';
 
             foreach ($this->$map as $Key => $Value) {
                 if (is_array($Value) && count($Value)) {
@@ -206,19 +206,19 @@ abstract class ActiveRecord
                     $joinType   = strtoupper($Value[0]);
                     $references = $Value[3];
 
-                    $ssql .= $joinType . " JOIN " . $tableName . " " . $tableAlias . " ON ";
+                    $ssql .= $joinType . ' JOIN ' . $tableName . ' ' . $tableAlias . ' ON ';
                     if (is_array($references)) {
-                        $ssql .= $tableAlias . "." . $references[0] . " = " . $this->getTableNameAlias() . "." . $references[1] . " ";
+                        $ssql .= $tableAlias . '.' . $references[0] . ' = ' . $this->getTableNameAlias() . '.' . $references[1] . ' ';
                     } else {
-                        $ssql .= $tableAlias . "." . $references . " = " . $this->getTableNameAlias() . "." . $references . " ";
+                        $ssql .= $tableAlias . '.' . $references . ' = ' . $this->getTableNameAlias() . '.' . $references . ' ';
                     }
                 }
             }
 
-            $ssql .= "WHERE " . $this->getTableNameAlias() . "." . $this->fieldKey("ID", $this->arTableMap) . " = :id";
+            $ssql .= 'WHERE ' . $this->getTableNameAlias() . '.' . $this->fieldKey('ID', $this->arTableMap) . ' = :id';
 
             $stmt = $this->objPDO->prepare($ssql);
-            $stmt->bindValue(":id", $this->ID, $this->getPDOParamType($this->ID));
+            $stmt->bindValue(':id', $this->ID, $this->getPDOParamType($this->ID));
             $stmt->execute();
 
             $ResultSet = $stmt->fetch(PDO::FETCH_OBJ);
@@ -251,7 +251,7 @@ abstract class ActiveRecord
 
         $this->checkNotNulls();
 
-        $ssqlValues = "";
+        $ssqlValues = '';
         $ID         = null;
 
         $tableName = $this->getTableName();
@@ -263,14 +263,14 @@ abstract class ActiveRecord
         }
 
         $maps = [
-            "arTableMap",
-            "arLazyTableMap"
+            'arTableMap',
+            'arLazyTableMap'
         ];
         foreach ($maps as $map) {
             foreach ($this->$map as $key => $value) {
-                if ($value == "ID" && !$blNotAIColumn) {
+                if ($value == 'ID' && !$blNotAIColumn) {
                     $ID = $key;
-                } elseif ($value == "ID" && $blNotAIColumn) {
+                } elseif ($value == 'ID' && $blNotAIColumn) {
                     $ID = $key;
                     $ssql .= "$key,";
                     $ssqlValues .= ":$key,";
@@ -297,8 +297,8 @@ abstract class ActiveRecord
         $stmt = $this->objPDO->prepare($ssql);
 
         $maps = [
-            "arTableMap",
-            "arLazyTableMap"
+            'arTableMap',
+            'arLazyTableMap'
         ];
 
         foreach ($maps as $map) {
@@ -311,7 +311,7 @@ abstract class ActiveRecord
         }
 
         if (isset($this->ID) || $blNotAIColumn == true) {
-            $stmt->bindValue(":$ID", $this->get("ID"), $this->getPDOParamType($this->get("ID")));
+            $stmt->bindValue(":$ID", $this->get('ID'), $this->getPDOParamType($this->get('ID')));
         }
 
         $Result = $stmt->execute();
@@ -331,8 +331,8 @@ abstract class ActiveRecord
         if (!$this->blKeysSet) {
             $this->arKeys = [];
             $maps         = [
-                "arTableMap",
-                "arLazyTableMap",
+                'arTableMap',
+                'arLazyTableMap',
                 'arRelationKeys'
             ];
 
@@ -373,8 +373,8 @@ abstract class ActiveRecord
         $Object = [];
 
         $maps = [
-            "arTableMap",
-            "arLazyTableMap"
+            'arTableMap',
+            'arLazyTableMap'
         ];
 
         foreach ($maps as $map) {
@@ -406,7 +406,7 @@ abstract class ActiveRecord
         if (in_array($Key, $this->arKeys)) {
             if (!$ResultSet || ($ResultSet && !isset($this->arModifiedFields[$Key]))) {
                 $this->$Key = ($Value !== '') ? $Value : null;
-                if ($Key != "ID" && !$ResultSet && !in_array($Key, $this->getRelationKeys())) {
+                if ($Key != 'ID' && !$ResultSet && !in_array($Key, $this->getRelationKeys())) {
                     $this->arModifiedFields[$Key] = true;
                 }
             }
@@ -469,11 +469,11 @@ abstract class ActiveRecord
     private function getPropertyMap($Property)
     {
         foreach (['arTableMap', 'arLazyTableMap', 'arRelationMap'] as $map) {
-            if ($map === "arTableMap" || $map === "arLazyTableMap") {
+            if ($map === 'arTableMap' || $map === 'arLazyTableMap') {
                 if (in_array($Property, $this->$map)) {
                     return $map;
                 }
-            } elseif ($map === "arRelationMap") {
+            } elseif ($map === 'arRelationMap') {
                 if (in_array($Property, $this->getRelationKeys())) {
                     return $map;
                 }
@@ -565,8 +565,8 @@ abstract class ActiveRecord
     public function markForDeletion($ForceDeletion = false)
     {
 
-        $this->set("blForDeletion", 1);
-        $this->set("blForceDeletion", $ForceDeletion);
+        $this->set('blForDeletion', 1);
+        $this->set('blForceDeletion', $ForceDeletion);
 
         if ($ForceDeletion) {
             $this->__destruct();
@@ -579,11 +579,11 @@ abstract class ActiveRecord
             $this->blForDeletion = false;
 
             $table_name = $this->getTableName();
-            $id         = $this->fieldKey("ID", $this->arTableMap);
+            $id         = $this->fieldKey('ID', $this->arTableMap);
             $ssql       = "DELETE FROM $table_name WHERE $id = :id";
 
             $stmt = $this->objPDO->prepare($ssql);
-            $stmt->bindValue(":id", $this->ID, $this->getPDOParamType($this->ID));
+            $stmt->bindValue(':id', $this->ID, $this->getPDOParamType($this->ID));
 
             try {
                 $stmt->execute();

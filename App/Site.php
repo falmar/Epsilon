@@ -13,7 +13,7 @@
 
 namespace App;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use Epsilon\Application\Application;
 

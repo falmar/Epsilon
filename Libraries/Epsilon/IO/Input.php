@@ -12,7 +12,7 @@
 
 namespace Epsilon\IO;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 /**
  * Class Input
@@ -116,7 +116,7 @@ class Input
         } elseif ($ClearingMethod === self::UTF8) {
             $Value = utf8_encode($Value);
         } elseif ($ClearingMethod === self::DATE) {
-            $Value = date("Y-m-d h:i:s", strtotime($Value));
+            $Value = date('Y-m-d h:i:s', strtotime($Value));
         } elseif ($ClearingMethod === self::FLOAT) {
             $Value = floatval($Value);
         } elseif ($ClearingMethod === self::INT) {

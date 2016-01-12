@@ -12,7 +12,7 @@
 
 namespace Epsilon\Application;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use Epsilon\Factory;
 use Epsilon\Object\Object;
@@ -59,7 +59,7 @@ abstract class Application extends Object
     {
         parent::__construct($Options);
         $this->Modules     = [];
-        $this->ContentType = "text/html";
+        $this->ContentType = 'text/html';
 
         if (php_sapi_name() == 'cli') {
             $this->CLIMode = true;
@@ -76,9 +76,9 @@ abstract class Application extends Object
     }
 
     /**
-     * Return an Application Object According to the ApplicationID located in "App/" folder
+     * Return an Application Object According to the ApplicationID located in 'App/' folder
      *
-     * @param string $ApplicationID
+*@param string $ApplicationID
      * @return Application
      */
     public static function getInstance($ApplicationID)
@@ -86,7 +86,7 @@ abstract class Application extends Object
         if (!isset(self::$Instance)) {
             $Class = "\\App\\$ApplicationID";
             if (!class_exists($Class)) {
-                Factory::getLogger()->emergency("ApplicationException: Can't read Application: {ApplicationID}", [
+                Factory::getLogger()->emergency('ApplicationException: Can\'t read Application: {ApplicationID}', [
                     'ApplicationID' => $ApplicationID
                 ]);
             }
@@ -176,8 +176,8 @@ abstract class Application extends Object
      */
     public function redirect($Route, $Parameters = [], $Fragment = null)
     {
-        Factory::getEventManager()->dispatch("Application.onRedirect");
-        header("Location: " . Factory::getRouter()->getURL($Route, $Parameters, $Fragment));
+        Factory::getEventManager()->dispatch('Application.onRedirect');
+        header('Location: ' . Factory::getRouter()->getURL($Route, $Parameters, $Fragment));
         exit();
     }
 

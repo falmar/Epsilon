@@ -12,7 +12,7 @@
 
 namespace Components\Site;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use Epsilon\Component\Component;
 

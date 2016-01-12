@@ -12,7 +12,7 @@
 
 namespace Epsilon\Module;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use Epsilon\MVC\Controller;
 
@@ -35,8 +35,8 @@ abstract class Module extends Controller
     protected function defineTableName()
     {
         return [
-            "Module",
-            "mdl"
+            'Module',
+            'mdl'
         ];
     }
 
@@ -46,17 +46,17 @@ abstract class Module extends Controller
     protected function defineTableMap()
     {
         return [
-            "ModuleID"       => "ID",
-            "ApplicationID"  => "ApplicationID",
-            "AssetID"        => "AssetID",
-            "AccessLevelID"  => "AccessLevelID",
-            "Module"         => "Module",
-            "Title"          => "Title",
-            "Position"       => "Position",
-            "Ordering"       => "Ordering",
-            "StartDate"      => "StartDate",
-            "ExpirationDate" => "ExpirationDate",
-            "blStatus"       => "blStatus"
+            'ModuleID'       => 'ID',
+            'ApplicationID'  => 'ApplicationID',
+            'AssetID'        => 'AssetID',
+            'AccessLevelID'  => 'AccessLevelID',
+            'Module'         => 'Module',
+            'Title'          => 'Title',
+            'Position'       => 'Position',
+            'Ordering'       => 'Ordering',
+            'StartDate'      => 'StartDate',
+            'ExpirationDate' => 'ExpirationDate',
+            'blStatus'       => 'blStatus'
         ];
     }
 
@@ -66,7 +66,7 @@ abstract class Module extends Controller
     protected function defineLazyTableMap()
     {
         return [
-            "Params" => "Params"
+            'Params' => 'Params'
         ];
     }
 

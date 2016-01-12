@@ -12,7 +12,7 @@
 
 namespace Epsilon\Language;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use App\Config;
 use Epsilon\Database\DatabaseHandler;
@@ -58,8 +58,8 @@ class Language extends ActiveRecord
     protected function defineTableName()
     {
         return [
-            "Language",
-            "lang"
+            'Language',
+            'lang'
         ];
     }
 
@@ -69,10 +69,10 @@ class Language extends ActiveRecord
     protected function defineTableMap()
     {
         return [
-            "LanguageID"    => "ID",
-            "ApplicationID" => "ApplicationID",
-            "Title"         => "Title",
-            "Code"          => "Code"
+            'LanguageID'    => 'ID',
+            'ApplicationID' => 'ApplicationID',
+            'Title'         => 'Title',
+            'Code'          => 'Code'
         ];
     }
 
@@ -82,7 +82,7 @@ class Language extends ActiveRecord
     protected function defineLazyTableMap()
     {
         return [
-            "Root" => "Root"
+            'Root' => 'Root'
         ];
     }
 
@@ -112,18 +112,18 @@ class Language extends ActiveRecord
             $Session       = Factory::getSession();
             $LanguageID    = null;
 
-            if (Input::getVar("LanguageID", "REQUEST")) {
-                $LanguageID = Input::getVar("LanguageID", "REQUEST");
-            } elseif ($Session->get("LanguageID")) {
-                $LanguageID = $Session->get("LanguageID");
+            if (Input::getVar('LanguageID', 'REQUEST')) {
+                $LanguageID = Input::getVar('LanguageID', 'REQUEST');
+            } elseif ($Session->get('LanguageID')) {
+                $LanguageID = $Session->get('LanguageID');
             }
 
             if ($LanguageID) {
-                $stmt = $dbh->prepare("SELECT * FROM Language WHERE ApplicationID = :AppID AND LanguageID = :LangID");
+                $stmt = $dbh->prepare('SELECT * FROM Language WHERE ApplicationID = :AppID AND LanguageID = :LangID');
 
                 try {
-                    $stmt->bindValue(":AppID", $ApplicationID, PDO::PARAM_STR);
-                    $stmt->bindValue(":LangID", $LanguageID, PDO::PARAM_INT);
+                    $stmt->bindValue(':AppID', $ApplicationID, PDO::PARAM_STR);
+                    $stmt->bindValue(':LangID', $LanguageID, PDO::PARAM_INT);
                     $stmt->execute();
                     $rst = $stmt->fetch(PDO::FETCH_OBJ);
                     if (is_object($rst)) {
@@ -137,33 +137,33 @@ class Language extends ActiveRecord
             }
 
             if (!self::$Instance instanceof Language) {
-                $stmt = $dbh->prepare("SELECT * FROM Language WHERE ApplicationID = :AppID AND Root = 1");
+                $stmt = $dbh->prepare('SELECT * FROM Language WHERE ApplicationID = :AppID AND Root = 1');
                 try {
-                    $stmt->bindValue(":AppID", $ApplicationID, PDO::PARAM_STR);
+                    $stmt->bindValue(':AppID', $ApplicationID, PDO::PARAM_STR);
                     $stmt->execute();
                     $rst = $stmt->fetch(PDO::FETCH_OBJ);
                     if (is_object($rst)) {
                         self::$Instance = new Language($dbh, $rst);
                     } else {
-                        Factory::getLogger()->emergency("No Language found in Database exiting...");
+                        Factory::getLogger()->emergency('No Language found in Database exiting...');
                     }
                 } catch (PDOException $e) {
                     $dbh->catchException($e, $stmt->queryString);
                 }
             }
 
-            if (self::$Instance instanceof Language && !$Session->get("LanguageID") || self::$Instance->get("ID") != $Session->get("LanguageID")) {
-                $Session->set("LanguageID", self::$Instance->get("ID"));
-                Factory::getSession()->set("Language", null);
+            if (self::$Instance instanceof Language && !$Session->get('LanguageID') || self::$Instance->get('ID') != $Session->get('LanguageID')) {
+                $Session->set('LanguageID', self::$Instance->get('ID'));
+                Factory::getSession()->set('Language', null);
             } else {
-                $Language = Factory::getSession()->get("Language");
+                $Language = Factory::getSession()->get('Language');
                 if (is_array($Language)) {
-                    if (isset($Language["arImportedFiles"])) {
-                        self::$Instance->set("arImportedFiles", $Language["arImportedFiles"]);
+                    if (isset($Language['arImportedFiles'])) {
+                        self::$Instance->set('arImportedFiles', $Language['arImportedFiles']);
                     }
 
-                    if (isset($Language["arStrings"])) {
-                        self::$Instance->set("arStrings", $Language["arStrings"]);
+                    if (isset($Language['arStrings'])) {
+                        self::$Instance->set('arStrings', $Language['arStrings']);
                     }
                 }
             }
@@ -205,14 +205,14 @@ class Language extends ActiveRecord
         if (!isset($this->arImportedFiles[$Path . $FileName])) {
 
             if (!$DefaultCode) {
-                $DefaultCode = $this->get("Code");
+                $DefaultCode = $this->get('Code');
             }
 
             if (!$Path) {
                 $Path = $this->getPath();
             }
 
-            $File = $Path . $DefaultCode . DS . $DefaultCode . "." . $FileName;
+            $File = $Path . $DefaultCode . DS . $DefaultCode . '.' . $FileName;
 
             if (is_readable($File)) {
 
@@ -221,7 +221,7 @@ class Language extends ActiveRecord
                     if (isset($XML_Language->Strings)) {
                         $this->arImportedFiles[$Path . $FileName] = 1;
                         foreach ($XML_Language->Strings->String as $String) {
-                            $this->arStrings[(string)$String["key"]] = (string)$String;
+                            $this->arStrings[(string)$String['key']] = (string)$String;
                         }
                     }
                 }
@@ -231,7 +231,7 @@ class Language extends ActiveRecord
                 }
 
             } else {
-                Factory::getLogger()->warning("LanguageException: Can't read Language: {File} ", ['File' => $File]);
+                Factory::getLogger()->warning('LanguageException: cannot read Language: {File} ', ['File' => $File]);
             }
         }
 
@@ -246,9 +246,9 @@ class Language extends ActiveRecord
     {
         if (!Config::APP_DEBUG) {
             $Language                    = [];
-            $Language["arImportedFiles"] = $this->arImportedFiles;
-            $Language["arStrings"]       = $this->arStrings;
-            Factory::getSession()->set("Language", $Language);
+            $Language['arImportedFiles'] = $this->arImportedFiles;
+            $Language['arStrings']       = $this->arStrings;
+            Factory::getSession()->set('Language', $Language);
         }
     }
 

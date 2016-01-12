@@ -12,7 +12,7 @@
 
 namespace Epsilon\MVC;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use Epsilon\Factory;
 use Epsilon\Object\Object;
@@ -62,7 +62,7 @@ class View extends Object
         $File = $this->getPath() . $this->Template;
 
         if (!is_readable($File)) {
-            throw new \Exception("ViewException: Can't read: " . $File);
+            throw new \Exception('ViewException: cannot read: ' . $File);
         }
 
         if ($this->blBuffer || $Buffer) {
@@ -87,7 +87,7 @@ class View extends Object
         $this->checkExtension($Template);
         $File = $this->getPath() . $Template;
         if (!is_readable($File)) {
-            throw new \Exception("ViewException: Can't read: " . $File);
+            throw new \Exception('ViewException: cannot read: ' . $File);
         }
 
         require($File);
@@ -98,8 +98,8 @@ class View extends Object
      */
     private function checkExtension(&$Template)
     {
-        if (strpos($Template, ".php") === false) {
-            $Template .= ".php";
+        if (strpos($Template, '.php') === false) {
+            $Template .= '.php';
         }
     }
 

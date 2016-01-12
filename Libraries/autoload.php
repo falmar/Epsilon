@@ -11,7 +11,7 @@
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 /**
  * PSR-4 Auto loader
@@ -19,28 +19,28 @@ defined("EPSILON_EXEC") or die();
 
 spl_autoload_register(function ($Class) {
     $slcPath = strtolower($Class);
-    $Path    = explode("\\", $Class);
+    $Path    = explode('\\', $Class);
     $Class   = array_pop($Path);
 
-    if (strpos($slcPath, "component") === 0) {
+    if (strpos($slcPath, 'component') === 0) {
         array_shift($Path);
         $ClassPath = COMPONENT_PATH;
-    } elseif (strpos($slcPath, "module") === 0) {
+    } elseif (strpos($slcPath, 'module') === 0) {
         array_shift($Path);
         $ClassPath = MODULE_PATH;
-    } elseif (strpos($slcPath, "template") === 0) {
+    } elseif (strpos($slcPath, 'template') === 0) {
         array_shift($Path);
         $ClassPath = TEMPLATE_PATH;
-    } elseif (strpos($slcPath, "app") === 0) {
+    } elseif (strpos($slcPath, 'app') === 0) {
         $ClassPath = ROOT_PATH;
     } else {
         $ClassPath = LIBRARY_PATH;
     }
 
     if ($Path) {
-        $Path = $ClassPath . implode(DS, $Path) . DS . $Class . ".php";
+        $Path = $ClassPath . implode(DS, $Path) . DS . $Class . '.php';
     } else {
-        $Path = $ClassPath . $Class . ".php";
+        $Path = $ClassPath . $Class . '.php';
     }
 
     if (is_readable($Path)) {

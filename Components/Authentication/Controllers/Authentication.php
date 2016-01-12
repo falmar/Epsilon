@@ -12,7 +12,7 @@
 
 namespace Components\Authentication\Controllers;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use Epsilon\Factory;
 use Epsilon\IO\Input;
@@ -27,32 +27,32 @@ class Authentication extends \Components\Authentication\Authentication
 {
     public function Login()
     {
-        $Credentials = Input::getVar("Login", "GET");
-        if (isset($Credentials["Email"])) {
-            $Login = $Credentials["Email"];
+        $Credentials = Input::getVar('Login', 'GET');
+        if (isset($Credentials['Email'])) {
+            $Login = $Credentials['Email'];
         } else {
             $Login = null;
         }
 
         $this->setDocumentVariables();
-        $this->setSubTitle("Authentication", false);
+        $this->setSubTitle('Authentication', false);
         SystemMessage::assignMessages('COM_AUTHENTICATION');
 
-        $View = $this->getView("login", ['Login' => $Login]);
+        $View = $this->getView('login', ['Login' => $Login]);
 
         $View->setDocumentPosition();
     }
 
     public function Authenticate()
     {
-        $Credentials    = Input::getVar("Login", "POST");
+        $Credentials    = Input::getVar('Login', 'POST');
         $Authentication = false;
 
         $this->setLanguageFile();
 
-        if (count($Credentials) == 2 && isset($Credentials["Email"]) && isset($Credentials["Password"])) {
+        if (count($Credentials) == 2 && isset($Credentials['Email']) && isset($Credentials['Password'])) {
 
-            if (Factory::getUser()->authenticate($Credentials["Email"], $Credentials["Password"], true)) {
+            if (Factory::getUser()->authenticate($Credentials['Email'], $Credentials['Password'], true)) {
                 $Authentication = true;
             }
         }
@@ -60,9 +60,9 @@ class Authentication extends \Components\Authentication\Authentication
         if ($Authentication) {
             Factory::getApplication()->redirectHome();
         } else {
-            SystemMessage::addMessage("COM_AUTHENTICATION", SystemMessage::MSG_ERROR, "COM_LOGIN-FAILED");
-            if (isset($Credentials["Email"])) {
-                Factory::getApplication()->redirect("Authentication/Login/", ['Login[Email]' => $Credentials["Email"]]);
+            SystemMessage::addMessage('COM_AUTHENTICATION', SystemMessage::MSG_ERROR, 'COM_LOGIN-FAILED');
+            if (isset($Credentials['Email'])) {
+                Factory::getApplication()->redirect('Authentication/Login/', ['Login[Email]' => $Credentials['Email']]);
             } else {
                 Factory::getApplication()->redirectLogin();
             }

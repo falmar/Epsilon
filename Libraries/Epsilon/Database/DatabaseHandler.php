@@ -12,7 +12,7 @@
 
 namespace Epsilon\Database;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use Epsilon\Factory;
 use PDO;
@@ -39,7 +39,7 @@ class DatabaseHandler extends PDO
         try {
             parent::__construct($strDSN, $User, $Password, $Options);
         } catch (PDOException $e) {
-            Factory::getLogger()->emergency("DatabaseHandler Can't Connect exiting...");
+            Factory::getLogger()->emergency('DatabaseHandler cannot connect exiting...');
         }
     }
 

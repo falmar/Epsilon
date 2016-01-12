@@ -12,7 +12,7 @@
 
 namespace Templates\fSite;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use Epsilon\Template\Template;
 
@@ -29,7 +29,7 @@ class fSite extends Template
      */
     protected function defineDefaultTemplate()
     {
-        return "Site.php";
+        return 'Site.php';
     }
 
     /**
@@ -37,7 +37,7 @@ class fSite extends Template
      */
     protected function defineDefaultXHRTemplate()
     {
-        return "AjaxResponse.php";
+        return 'AjaxResponse.php';
     }
 
     /**

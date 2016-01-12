@@ -12,7 +12,7 @@
 
 namespace Epsilon\Database;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use Epsilon\Factory;
 use Epsilon\User\SystemMessage;
@@ -26,7 +26,7 @@ use PDOException;
 class Debug
 {
     private static $blDebug          = false;
-    private static $currentSSQL      = "";
+    private static $currentSSQL      = '';
     private static $arDebugSSQL      = [];
     private static $arErrorDebugSSQL = [];
 
@@ -84,7 +84,7 @@ class Debug
             $DriverCode    = $exception->errorInfo[1];
             $DriverMessage = htmlentities($exception->errorInfo[2]);
         } else {
-            $DriverCode    = "PDO_ENGINE";
+            $DriverCode    = 'PDO_ENGINE';
             $DriverMessage = htmlentities($exception->getMessage());
         }
 
@@ -100,7 +100,7 @@ class Debug
         }
 
         if (self::inDebug()) {
-            SystemMessage::addMessage("_DBH", "alert", $DriverMessage, false);
+            SystemMessage::addMessage('_DBH', 'alert', $DriverMessage, false);
         }
 
         return true;

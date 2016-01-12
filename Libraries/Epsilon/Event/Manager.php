@@ -12,7 +12,7 @@
 
 namespace Epsilon\Event;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 /**
  * Class Manager

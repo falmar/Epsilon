@@ -12,7 +12,7 @@
 
 namespace Epsilon\MVC;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use Epsilon\Factory;
 use Epsilon\Object\ActiveRecord;
@@ -27,8 +27,8 @@ use Exception;
 abstract class Controller extends ActiveRecord
 {
 
-    const    COMPONENT_TYPE = "Component";
-    const    MODULE_TYPE    = "Module";
+    const    COMPONENT_TYPE = 'Component';
+    const    MODULE_TYPE    = 'Module';
 
     private   $ControllerType;
     private   $Models;
@@ -114,7 +114,7 @@ abstract class Controller extends ActiveRecord
     protected function getViewPath()
     {
         if (!isset($this->ViewPath)) {
-            $this->ViewPath = $this->getPath() . "Views" . DS;
+            $this->ViewPath = $this->getPath() . 'Views' . DS;
         }
 
         return $this->ViewPath;
@@ -128,7 +128,7 @@ abstract class Controller extends ActiveRecord
     protected function getLanguagePath()
     {
         if (!$this->LanguagePath) {
-            $this->LanguagePath = $this->getPath() . "Language" . DS;
+            $this->LanguagePath = $this->getPath() . 'Language' . DS;
         }
 
         return $this->LanguagePath;
@@ -142,7 +142,7 @@ abstract class Controller extends ActiveRecord
     protected function getControllerPath()
     {
         if (!isset($this->ControllersPath)) {
-            $this->ControllersPath = $this->getPath() . "Controllers" . DS;
+            $this->ControllersPath = $this->getPath() . 'Controllers' . DS;
         }
 
         return $this->ControllersPath;
@@ -156,7 +156,7 @@ abstract class Controller extends ActiveRecord
     protected function getModelPath()
     {
         if (!isset($this->ModelsPath)) {
-            $this->ModelsPath = $this->getPath() . "Models" . DS;
+            $this->ModelsPath = $this->getPath() . 'Models' . DS;
         }
 
         return $this->ModelsPath;
@@ -175,7 +175,7 @@ abstract class Controller extends ActiveRecord
         }
 
         if (is_array($Params)) {
-            $this->set("Params", json_encode($Params));
+            $this->set('Params', json_encode($Params));
         }
     }
 
@@ -186,7 +186,7 @@ abstract class Controller extends ActiveRecord
      */
     protected function getParams()
     {
-        $Params = $this->get("Params");
+        $Params = $this->get('Params');
         if (is_string($Params)) {
             $Params = (array)json_decode($Params);
         } elseif (!$Params) {
@@ -253,15 +253,15 @@ abstract class Controller extends ActiveRecord
     {
         if (!isset($this->View[$Position])) {
             if (is_null($Position)) {
-                if (Factory::getApplication()->get("XHRequest")) {
-                    $Position = "XHRequest";
+                if (Factory::getApplication()->get('XHRequest')) {
+                    $Position = 'XHRequest';
                 } else {
-                    $Position = $this->get("Position");
+                    $Position = $this->get('Position');
                 }
             }
 
-            if (strpos($Template, ".php") === false) {
-                $Template .= ".php";
+            if (strpos($Template, '.php') === false) {
+                $Template .= '.php';
             }
 
             $this->View[$Position] = new View($this->getViewPath(), $Template, $Position, $Variables, $Buffer);
@@ -287,7 +287,7 @@ abstract class Controller extends ActiveRecord
     {
         $Files      = null;
         $eLang      = Factory::getLanguage();
-        $Code       = $eLang->get("Code");
+        $Code       = $eLang->get('Code');
         $Language   = null;
         $Properties = $this->defineProperties();
 
@@ -321,12 +321,12 @@ abstract class Controller extends ActiveRecord
                 if (is_array($File)) {
                     foreach ($File as $f) {
                         if ($f == (string)$lang) {
-                            $eLang->addFile((string)$lang, $this->getPath() . "Language" . DS, $Code);
+                            $eLang->addFile((string)$lang, $this->getPath() . 'Language' . DS, $Code);
                             break;
                         }
                     }
                 } else {
-                    $eLang->addFile((string)$lang, $this->getPath() . "Language" . DS, $Code);
+                    $eLang->addFile((string)$lang, $this->getPath() . 'Language' . DS, $Code);
                 }
             }
         }
@@ -439,15 +439,15 @@ abstract class Controller extends ActiveRecord
                     }
 
                     if ($ClassName === null) {
-                        throw new Exception("Model {" . $Name . "} Doesn't exist in " . $this->ControllerType . " {" . $this->get($this->ControllerType) . "}");
+                        throw new Exception('Model {' . $Name . '} does not exist in ' . $this->ControllerType . ' {' . $this->get($this->ControllerType) . '}');
                     }
                 }
 
-                $class               = "\\" . $this->ControllerType . "s\\" . $Component . "\\Models\\" . $ClassName;
+                $class               = '\\' . $this->ControllerType . 's\\' . $Component . '\\Models\\' . $ClassName;
                 $this->Models[$Name] = new $class;
 
             } catch (Exception $e) {
-                Factory::getLogger()->alert("ComponentException: {Message}", ['Message' => $e->getMessage()]);
+                Factory::getLogger()->alert('ComponentException: {Message}', ['Message' => $e->getMessage()]);
             }
         }
 

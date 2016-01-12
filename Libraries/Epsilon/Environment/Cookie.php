@@ -12,7 +12,7 @@
 
 namespace Epsilon\Environment;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use Epsilon\Factory;
 use Epsilon\Object\Object;
@@ -71,8 +71,8 @@ class Cookie extends Object
         }
 
         $this->newCookies[$Key] = [
-            "value"    => base64_encode($Value),
-            "lifespan" => $Lifespan
+            'value'    => base64_encode($Value),
+            'lifespan' => $Lifespan
         ];
 
         $Lifespan = time() + ((is_int($Lifespan)) ? $Lifespan : $this->Lifespan);
@@ -89,7 +89,7 @@ class Cookie extends Object
     function get($Key)
     {
         if (isset($this->newCookies[$Key])) {
-            $value = $this->newCookies[$Key]["value"];
+            $value = $this->newCookies[$Key]['value'];
         } elseif (isset($this->Cookies[$Key])) {
             $value = $this->Cookies[$Key];
         } else {

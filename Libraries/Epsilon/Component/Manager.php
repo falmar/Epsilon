@@ -12,7 +12,7 @@
 
 namespace Epsilon\Component;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use Epsilon\Factory;
 use Epsilon\Object\Object;
@@ -36,7 +36,7 @@ class Manager extends Object
      */
     public function __construct($ApplicationID)
     {
-        parent::__construct(["ApplicationID" => $ApplicationID]);
+        parent::__construct(['ApplicationID' => $ApplicationID]);
     }
 
     /**
@@ -54,24 +54,24 @@ class Manager extends Object
 
             try {
 
-                $stmt = $dbh->prepare("SELECT * FROM Component WHERE ApplicationID = :AppID AND blStatus = 1 AND Component = :Component;");
+                $stmt = $dbh->prepare('SELECT * FROM Component WHERE ApplicationID = :AppID AND blStatus = 1 AND Component = :Component;');
 
                 try {
-                    $stmt->bindValue(":AppID", $this->ApplicationID, PDO::PARAM_STR);
-                    $stmt->bindValue(":Component", (string)ucfirst($_Component), PDO::PARAM_STR);
+                    $stmt->bindValue(':AppID', $this->ApplicationID, PDO::PARAM_STR);
+                    $stmt->bindValue(':Component', (string)ucfirst($_Component), PDO::PARAM_STR);
                     $stmt->execute();
                     $Component = new Object($stmt->fetch(PDO::FETCH_OBJ));
                 } catch (PDOException $e) {
                     $dbh->catchException($e, $stmt->queryString);
-                    throw new Exception("EpsilonCMS Can't Load Component DB");
+                    throw new Exception('EpsilonCMS cannot Load Component DB');
                 }
 
-                if ($Component->get("ComponentID")) {
+                if ($Component->get('ComponentID')) {
 
                     $AccessLevels = Factory::getUser()->getAuthorizedLevels();
 
                     /** Verify if the current user has access to the component */
-                    if (!in_array($Component->get("AccessLevelID"), $AccessLevels)) {
+                    if (!in_array($Component->get('AccessLevelID'), $AccessLevels)) {
                         if (Factory::getUser()->isGuest()) {
                             if (Factory::getApplication()->isCLI()) {
                                 Factory::getLogger()->alert(Factory::getLanguage()->_('NOT_AUTHORIZED'));
@@ -84,7 +84,7 @@ class Manager extends Object
                     }
 
                     /** Creates the Class|Controller Namespace */
-                    $Namespace = "\\Components\\" . $_Component . "\\Controllers\\";
+                    $Namespace = '\\Components\\' . $_Component . '\\Controllers\\';
 
                     /**
                      * If the route contains a controller use that controller
@@ -100,7 +100,7 @@ class Manager extends Object
                     $Class = $Namespace . $Controller;
 
                     if (!class_exists($Class)) {
-                        throw new \Exception("Controller doesn't exist {$Controller}->{$Action}({$ID})");
+                        throw new \Exception("Controller does not exist {$Controller}->{$Action}({$ID})");
                     }
 
                     $Component = new $Class($dbh, $Component);
@@ -112,17 +112,17 @@ class Manager extends Object
                     ])) {
                         $Component->{$Action}($ID);
                     } else {
-                        throw new \Exception("Controller method doesn't exist {$Controller}->{$Action}({$ID})");
+                        throw new \Exception("Controller method does not exist {$Controller}->{$Action}({$ID})");
                     }
 
                     $this->Component = $Component;
 
                 } else {
-                    throw new \Exception("Component {" . $_Component . "} doesn't exist in Database");
+                    throw new \Exception('Component {' . $_Component . '} does not exist in Database');
                 }
 
             } catch (\Exception $e) {
-                Factory::getLogger()->alert("ComponentManagerException: {Message} {File} {Line}", [
+                Factory::getLogger()->alert('ComponentManagerException: {Message} {File} {Line}', [
                     'Message' => $e->getMessage(),
                     'File'    => $e->getFile(),
                     'Line'    => $e->getLine()

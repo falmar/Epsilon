@@ -24,7 +24,7 @@ use PDOException;
 /**
  * Class Utility
  *
-*@package Epsilon\Utility
+ * @package Epsilon\Utility
  */
 class Utility
 {

@@ -12,7 +12,7 @@
 
 namespace Epsilon;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use App\Config;
 use Epsilon\Access\Access;
@@ -60,7 +60,7 @@ class Factory
     public static function getApplication()
     {
         if (!isset(self::$Application)) {
-            Factory::getLogger()->emergency("Application haven't been set");
+            Factory::getLogger()->emergency('Application have not been set');
         }
 
         return self::$Application;
@@ -113,9 +113,9 @@ class Factory
     {
         if (!self::$Cookie) {
             self::$Cookie = new Cookie([
-                "Lifespan" => Config::SESSION_LIFESPAN,
-                "Path"     => Config::COOKIE_PATH,
-                "Domain"   => Config::COOKIE_DOMAIN
+                'Lifespan' => Config::SESSION_LIFESPAN,
+                'Path'     => Config::COOKIE_PATH,
+                'Domain'   => Config::COOKIE_DOMAIN
             ]);
         }
 
@@ -140,7 +140,7 @@ class Factory
     public static function getDBH()
     {
         if (!isset(self::$DatabaseHandler)) {
-            $strDSN                = Config::DB_PROTOCOL . ":dbname=" . Config::DB_NAME . ";host=" . Config::DB_HOST . ";port=" . Config::DB_PORT;
+            $strDSN                = Config::DB_PROTOCOL . ':dbname=' . Config::DB_NAME . ';host=' . Config::DB_HOST . ';port=' . Config::DB_PORT;
             self::$DatabaseHandler = new DatabaseHandler($strDSN, Config::DB_USER, Config::DB_PASSWORD, [
                 PDO::ATTR_PERSISTENT => true,
                 PDO::ATTR_ERRMODE    => PDO::ERRMODE_EXCEPTION

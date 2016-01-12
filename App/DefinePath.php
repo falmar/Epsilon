@@ -10,13 +10,13 @@
  * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
-define("ROOT_PATH", EPSILON_PATH);
-define("LIBRARY_PATH", ROOT_PATH . "Libraries" . DS);
-define("COMPONENT_PATH", ROOT_PATH . "Components" . DS);
-define("MODULE_PATH", ROOT_PATH . "Modules" . DS);
-define("TEMPLATE_PATH", ROOT_PATH . "Templates" . DS);
-define("LANGUAGE_PATH", ROOT_PATH . "Languages" . DS);
+define('ROOT_PATH', EPSILON_PATH);
+define('LIBRARY_PATH', ROOT_PATH . 'Libraries' . DS);
+define('COMPONENT_PATH', ROOT_PATH . 'Components' . DS);
+define('MODULE_PATH', ROOT_PATH . 'Modules' . DS);
+define('TEMPLATE_PATH', ROOT_PATH . 'Templates' . DS);
+define('LANGUAGE_PATH', ROOT_PATH . 'Languages' . DS);
 
 /** Define Custom Paths */

@@ -12,7 +12,7 @@
 
 namespace Epsilon\Logger;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use App\Config;
 use Epsilon\Factory;
@@ -96,7 +96,7 @@ class Logger extends AbstractLogger
     public static function addPHPError($ErrorNo, $Message, $ErrorFile, $ErrorLine)
     {
         self::getErrorTypeString($ErrorNo, $ErrorNoString, $LogLevel);
-        self::getInstance()->log($LogLevel, "{ErrorString} ({ErrorNo}): {Message}.\nFile: {File}\nLine: {Line}", [
+        self::getInstance()->log($LogLevel, '{ErrorString} ({ErrorNo}): {Message}.\nFile: {File}\nLine: {Line}', [
             'ErrorString' => $ErrorNoString,
             'ErrorNo'     => $ErrorNo,
             'Message'     => $Message,
@@ -127,7 +127,7 @@ class Logger extends AbstractLogger
      */
     public static function uncaughtException($Exception)
     {
-        self::getInstance()->log(LogLevel::EMERGENCY, "Uncaught Exception: {Message}\nFile: {File}\nLine: {Line}", [
+        self::getInstance()->log(LogLevel::EMERGENCY, 'Uncaught Exception: {Message}\nFile: {File}\nLine: {Line}', [
             'Message' => $Exception->getMessage(),
             'File'    => $Exception->getFile(),
             'Line'    => $Exception->getLine()
@@ -137,7 +137,7 @@ class Logger extends AbstractLogger
     public static function shutdown()
     {
         if ($Error = error_get_last()) {
-            self::addPHPError($Error["type"], $Error["message"], $Error["file"], $Error["line"]);
+            self::addPHPError($Error['type'], $Error['message'], $Error['file'], $Error['line']);
         }
     }
 
@@ -150,46 +150,46 @@ class Logger extends AbstractLogger
     private static function getErrorTypeString($ErrorNo, &$ErrorNoString, &$LogLevel)
     {
         if ($ErrorNo === E_ERROR) {
-            $ErrorNoString = "Fatal Error";
+            $ErrorNoString = 'Fatal Error';
             $LogLevel      = LogLevel::EMERGENCY;
         } elseif ($ErrorNo === E_WARNING) {
-            $ErrorNoString = "Warning";
+            $ErrorNoString = 'Warning';
             $LogLevel      = LogLevel::WARNING;
         } elseif ($ErrorNo === E_PARSE) {
-            $ErrorNoString = "Parse Error";
+            $ErrorNoString = 'Parse Error';
             $LogLevel      = LogLevel::ERROR;
         } elseif ($ErrorNo === E_NOTICE) {
-            $ErrorNoString = "Notice";
+            $ErrorNoString = 'Notice';
             $LogLevel      = LogLevel::NOTICE;
         } elseif ($ErrorNo === E_CORE_ERROR) {
-            $ErrorNoString = "Core Error";
+            $ErrorNoString = 'Core Error';
             $LogLevel      = LogLevel::EMERGENCY;
         } elseif ($ErrorNo === E_CORE_WARNING) {
-            $ErrorNoString = "Core Warning";
+            $ErrorNoString = 'Core Warning';
             $LogLevel      = LogLevel::WARNING;
         } elseif ($ErrorNo === E_COMPILE_ERROR) {
-            $ErrorNoString = "Compile Error";
+            $ErrorNoString = 'Compile Error';
             $LogLevel      = LogLevel::EMERGENCY;
         } elseif ($ErrorNo === E_COMPILE_WARNING) {
-            $ErrorNoString = "Compile Warning";
+            $ErrorNoString = 'Compile Warning';
             $LogLevel      = LogLevel::WARNING;
         } elseif ($ErrorNo === E_USER_ERROR) {
-            $ErrorNoString = "User Error";
+            $ErrorNoString = 'User Error';
             $LogLevel      = LogLevel::EMERGENCY;
         } elseif ($ErrorNo === E_USER_WARNING) {
-            $ErrorNoString = "User Warning";
+            $ErrorNoString = 'User Warning';
             $LogLevel      = LogLevel::WARNING;
         } elseif ($ErrorNo === E_USER_NOTICE) {
-            $ErrorNoString = "User Notice";
+            $ErrorNoString = 'User Notice';
             $LogLevel      = LogLevel::NOTICE;
         } elseif ($ErrorNo === E_STRICT) {
-            $ErrorNoString = "Strict Notice";
+            $ErrorNoString = 'Strict Notice';
             $LogLevel      = LogLevel::NOTICE;
         } elseif ($ErrorNo === E_RECOVERABLE_ERROR) {
-            $ErrorNoString = "Recoverable Error";
+            $ErrorNoString = 'Recoverable Error';
             $LogLevel      = LogLevel::ALERT;
         } else {
-            $ErrorNoString = "Unknown error ($ErrorNo)";
+            $ErrorNoString = 'Unknown error ($ErrorNo)';
             $LogLevel      = LogLevel::CRITICAL;
         }
     }

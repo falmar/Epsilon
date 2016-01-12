@@ -12,7 +12,7 @@
 
 namespace Epsilon\Object;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 /**
  * Class Object

@@ -12,7 +12,7 @@
 
 namespace Epsilon\Component;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use Epsilon\MVC\Controller;
 
@@ -31,8 +31,8 @@ abstract class Component extends Controller
     protected function defineTableName()
     {
         return [
-            "Component",
-            "com"
+            'Component',
+            'com'
         ];
     }
 
@@ -44,13 +44,13 @@ abstract class Component extends Controller
     protected function defineTableMap()
     {
         return [
-            "ComponentID"   => "ID",
-            "ApplicationID" => "ApplicationID",
-            "AccessLevelID" => "AccessLevelID",
-            "AssetID"       => "AssetID",
-            "Component"     => "Component",
-            "Position"      => "Position",
-            "blStatus"      => "blStatus",
+            'ComponentID'   => 'ID',
+            'ApplicationID' => 'ApplicationID',
+            'AccessLevelID' => 'AccessLevelID',
+            'AssetID'       => 'AssetID',
+            'Component'     => 'Component',
+            'Position'      => 'Position',
+            'blStatus'      => 'blStatus',
         ];
     }
 
@@ -62,9 +62,9 @@ abstract class Component extends Controller
     protected function defineLazyTableMap()
     {
         return [
-            "Title"     => "Title",
-            "Protected" => "Protected",
-            "Params"    => "Params"
+            'Title'     => 'Title',
+            'Protected' => 'Protected',
+            'Params'    => 'Params'
         ];
     }
 
@@ -87,9 +87,9 @@ abstract class Component extends Controller
     }
 
     /**
-     * Define the type of Controller in this case is "Component"
+     * Define the type of Controller in this case is 'Component'
      *
-     * @return string
+*@return string
      */
     protected function defineControllerType()
     {

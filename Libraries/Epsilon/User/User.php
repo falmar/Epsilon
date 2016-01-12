@@ -12,7 +12,7 @@
 
 namespace Epsilon\User;
 
-defined("EPSILON_EXEC") or die();
+defined('EPSILON_EXEC') or die();
 
 use App\Config;
 use Epsilon\Factory;
@@ -44,8 +44,8 @@ class User extends ActiveRecord
     protected function defineTableName()
     {
         return [
-            "User",
-            "u"
+            'User',
+            'u'
         ];
     }
 
@@ -55,11 +55,11 @@ class User extends ActiveRecord
     protected function defineTableMap()
     {
         return [
-            "UserID"   => "ID",
-            "Name"     => "Name",
-            "Email"    => "Email",
-            "Username" => "Username",
-            "blStatus" => "blStatus"
+            'UserID'   => 'ID',
+            'Name'     => 'Name',
+            'Email'    => 'Email',
+            'Username' => 'Username',
+            'blStatus' => 'blStatus'
         ];
     }
 
@@ -69,11 +69,11 @@ class User extends ActiveRecord
     protected function defineLazyTableMap()
     {
         return [
-            "PasswordSalt"     => "PasswordSalt",
-            "Pwd"              => "Password",
-            "RegisteredDate"   => "RegisteredDate",
-            "LastLogin"        => "LastLogin",
-            "ConfirmationCode" => "ConfirmationCode"
+            'PasswordSalt'     => 'PasswordSalt',
+            'Pwd'              => 'Password',
+            'RegisteredDate'   => 'RegisteredDate',
+            'LastLogin'        => 'LastLogin',
+            'ConfirmationCode' => 'ConfirmationCode'
         ];
     }
 
@@ -113,8 +113,8 @@ class User extends ActiveRecord
     public static function getInstance()
     {
         if (!isset(self::$Instance)) {
-            if (Factory::getSession()->get("User")) {
-                self::$Instance = new User(Factory::getDBH(), Factory::getSession()->get("User"));
+            if (Factory::getSession()->get('User')) {
+                self::$Instance = new User(Factory::getDBH(), Factory::getSession()->get('User'));
             } else {
                 self::$Instance = new User(Factory::getDBH(), [
                     'Name' => Factory::getLanguage()->_('GUEST')
@@ -152,12 +152,12 @@ class User extends ActiveRecord
     {
         $dbh = $this->objPDO;
 
-        $stmt = $dbh->prepare("SELECT UserID,Pwd FROM User WHERE (Email = :Username OR Username = :Username)");
+        $stmt = $dbh->prepare('SELECT UserID,Pwd FROM User WHERE (Email = :Username OR Username = :Username)');
 
         try {
-            $stmt->bindValue(":Username", $Username, PDO::PARAM_STR);
-            $stmt->bindColumn("Pwd", $Hash, PDO::PARAM_STR);
-            $stmt->bindColumn("UserID", $UserID);
+            $stmt->bindValue(':Username', $Username, PDO::PARAM_STR);
+            $stmt->bindColumn('Pwd', $Hash, PDO::PARAM_STR);
+            $stmt->bindColumn('UserID', $UserID);
             $stmt->execute();
             $stmt->fetch();
 
@@ -182,11 +182,11 @@ class User extends ActiveRecord
     private function logIn($UserID)
     {
         $this->ID = $UserID;
-        if ($this->get("blStatus") == 1) {
+        if ($this->get('blStatus') == 1) {
             try {
-                $this->set("LastLogin", Utility::getDateForDB());
+                $this->set('LastLogin', Utility::getDateForDB());
                 $this->save();
-                Factory::getSession()->set("User", $UserID);
+                Factory::getSession()->set('User', $UserID);
 
                 return true;
             } catch (PDOException $e) {
@@ -208,7 +208,7 @@ class User extends ActiveRecord
     public function impress()
     {
         if (!$this->isGuest()) {
-            $this->set("LastLogin", Utility::getDateForDB());
+            $this->set('LastLogin', Utility::getDateForDB());
             $this->save();
         }
     }
@@ -222,7 +222,7 @@ class User extends ActiveRecord
      */
     public function authorized($Action, $Asset = null)
     {
-        return Factory::getAccess()->authorized($this->get("ID"), $Action, $Asset);
+        return Factory::getAccess()->authorized($this->get('ID'), $Action, $Asset);
     }
 
     /**
@@ -231,7 +231,7 @@ class User extends ActiveRecord
     public function getAuthorizedLevels()
     {
         if (!$this->authAccessLevels) {
-            $this->authAccessLevels = Factory::getAccess()->getAuthorizedAccessLevel($this->get("ID"));
+            $this->authAccessLevels = Factory::getAccess()->getAuthorizedAccessLevel($this->get('ID'));
         }
 
         return $this->authAccessLevels;
@@ -243,7 +243,7 @@ class User extends ActiveRecord
     public function getAuthorizedGroups()
     {
         if (!$this->authUserGroups) {
-            $this->authUserGroups = Factory::getAccess()->getGroupsByUser($this->get("ID"));
+            $this->authUserGroups = Factory::getAccess()->getGroupsByUser($this->get('ID'));
         }
 
         return $this->authUserGroups;
@@ -278,12 +278,12 @@ class User extends ActiveRecord
     {
         $dbh = Factory::getDBH();
 
-        $stmt = $dbh->prepare("INSERT INTO UserGroupMap (UserID, UserGroupID, Main) VALUES (:UserID,:UserGroupID,:Main)");
+        $stmt = $dbh->prepare('INSERT INTO UserGroupMap (UserID, UserGroupID, Main) VALUES (:UserID,:UserGroupID,:Main)');
 
         try {
-            $stmt->bindValue(":UserID", $this->ID, PDO::PARAM_INT);
-            $stmt->bindValue(":UserGroupID", $UserGroupID, PDO::PARAM_INT);
-            $stmt->bindValue(":Main", $Main, PDO::PARAM_BOOL);
+            $stmt->bindValue(':UserID', $this->ID, PDO::PARAM_INT);
+            $stmt->bindValue(':UserGroupID', $UserGroupID, PDO::PARAM_INT);
+            $stmt->bindValue(':Main', $Main, PDO::PARAM_BOOL);
             $stmt->execute();
         } catch (PDOException $e) {
             $dbh->catchException($e, $stmt->queryString);
@@ -294,10 +294,10 @@ class User extends ActiveRecord
     {
         $dbh = Factory::getDBH();
 
-        $stmt = $dbh->prepare("DELETE FROM UserGroupMap WHERE UserID = :UserID");
+        $stmt = $dbh->prepare('DELETE FROM UserGroupMap WHERE UserID = :UserID');
 
         try {
-            $stmt->bindValue(":UserID", $this->ID, PDO::PARAM_INT);
+            $stmt->bindValue(':UserID', $this->ID, PDO::PARAM_INT);
             $stmt->execute();
         } catch (PDOException $e) {
             $dbh->catchException($e, $stmt->queryString);
@@ -312,10 +312,10 @@ class User extends ActiveRecord
 
         $dbh = $this->objPDO;
 
-        $stmt = $dbh->prepare("SELECT ug.UserGroupID,ug.Title FROM UserGroup ug INNER JOIN UserGroupMap ugm ON ugm.UserGroupID = ug.UserGroupID WHERE ugm.UserID = :UserID AND ugm.Main = 1");
+        $stmt = $dbh->prepare('SELECT ug.UserGroupID,ug.Title FROM UserGroup ug INNER JOIN UserGroupMap ugm ON ugm.UserGroupID = ug.UserGroupID WHERE ugm.UserID = :UserID AND ugm.Main = 1');
 
         try {
-            $stmt->bindValue("UserID", $this->ID, PDO::PARAM_INT);
+            $stmt->bindValue('UserID', $this->ID, PDO::PARAM_INT);
             $stmt->execute();
 
             return new Object($stmt->fetch());
@@ -328,8 +328,8 @@ class User extends ActiveRecord
 
     public function __destruct()
     {
-        if ($this->blForDeletion && $this->get("ID") == Factory::getUser()->get("ID")) {
-            throw new PDOException("Can't Delete User if current session active");
+        if ($this->blForDeletion && $this->get('ID') == Factory::getUser()->get('ID')) {
+            throw new PDOException('Cannot Delete User if current session active');
         } elseif ($this->blForDeletion) {
             $this->deleteUserGroupMap();
         }
