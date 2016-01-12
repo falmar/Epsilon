@@ -180,7 +180,7 @@ class Language extends ActiveRecord
      */
     public function _($Key, $ClearMethod = Input::HTML, $Output = false)
     {
-        if (array_key_exists($Key, $this->arStrings)) {
+        if (isset($this->arStrings[$Key])) {
             if ($Output) {
                 $String = Output::_($this->arStrings[$Key], $ClearMethod);
             } else {
@@ -202,7 +202,7 @@ class Language extends ActiveRecord
      */
     public function addFile($FileName, $Path = null, $DefaultCode = null)
     {
-        if (!array_key_exists($Path . $FileName, $this->arImportedFiles)) {
+        if (!isset($this->arImportedFiles[$Path . $FileName])) {
 
             if (!$DefaultCode) {
                 $DefaultCode = $this->get("Code");

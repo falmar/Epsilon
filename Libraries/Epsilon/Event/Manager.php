@@ -49,7 +49,7 @@ class Manager
      */
     public function dispatch($Event)
     {
-        if (array_key_exists($Event, $this->Events)) {
+        if (isset($this->Events[$Event])) {
             foreach ($this->Events[$Event] as $listener) {
                 if (is_array($listener)) {
                     if (is_callable($listener[0])) {

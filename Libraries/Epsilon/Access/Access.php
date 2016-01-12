@@ -203,7 +203,7 @@ class Access extends Object
             $this->getUserGroups();
         }
 
-        if (!array_key_exists($GroupID, $this->arGroupsByUser)) {
+        if (!isset($this->arGroupsByUser[$GroupID])) {
             return [];
         }
 

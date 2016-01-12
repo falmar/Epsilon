@@ -88,9 +88,9 @@ class Cookie extends Object
      */
     function get($Key)
     {
-        if (array_key_exists($Key, $this->newCookies)) {
+        if (isset($this->newCookies[$Key])) {
             $value = $this->newCookies[$Key]["value"];
-        } elseif (array_key_exists($Key, $this->Cookies)) {
+        } elseif (isset($this->Cookies[$Key])) {
             $value = $this->Cookies[$Key];
         } else {
             $value = null;

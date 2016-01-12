@@ -244,7 +244,7 @@ abstract class Router extends Object
                     foreach (explode('/', $rKey) as $item) {
                         if (strpos($item, ':')) {
                             $Key = substr($item, 1, strpos($item, ':') - 1);
-                            if (array_key_exists($Key, $Parameters)) {
+                            if ((isset($Parameters[$Key]))) {
                                 $replace[$item] = $Parameters[$Key];
                                 unset($arQuery[$Key]);
                                 $Match++;

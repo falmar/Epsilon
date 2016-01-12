@@ -130,7 +130,7 @@ class Document extends Object
      */
     public function checkPosition($Position)
     {
-        return array_key_exists($Position, $this->Positions) ? true : false;
+        return isset($this->Positions[$Position]) ? true : false;
     }
 
     /**

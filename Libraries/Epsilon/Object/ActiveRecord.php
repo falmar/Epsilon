@@ -404,7 +404,7 @@ abstract class ActiveRecord
         }
 
         if (in_array($Key, $this->arKeys)) {
-            if (!$ResultSet || ($ResultSet && !array_key_exists($Key, $this->arModifiedFields))) {
+            if (!$ResultSet || ($ResultSet && !isset($this->arModifiedFields[$Key]))) {
                 $this->$Key = ($Value !== '') ? $Value : null;
                 if ($Key != "ID" && !$ResultSet && !in_array($Key, $this->getRelationKeys())) {
                     $this->arModifiedFields[$Key] = true;
@@ -458,7 +458,7 @@ abstract class ActiveRecord
      */
     private function modifiedProperty($key)
     {
-        return array_key_exists($key, $this->arModifiedFields);
+        return isset($this->arModifiedFields[$key]);
     }
 
     /**

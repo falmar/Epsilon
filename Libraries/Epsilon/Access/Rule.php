@@ -64,10 +64,8 @@ class Rule extends Object
         $Identity = (int)$Identity;
         $Allow    = (int)($Allow);
 
-        if (array_key_exists($Identity, $this->Identities)) {
-            if ($this->Identities[$Identity] !== 0) {
-                $this->Identities[$Identity] = $Allow;
-            }
+        if (isset($this->Identities[$Identity]) && $this->Identities[$Identity !== 0]) {
+            $this->Identities[$Identity] = $Allow;
         } else {
             $this->Identities[$Identity] = $Allow;
         }

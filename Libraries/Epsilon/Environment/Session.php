@@ -235,13 +235,13 @@ class Session
             if ($Global) {
                 $PHP_SessionID   = "_system";
                 $SessionVariable = &$this->globalSessionVariables;
-                if (array_key_exists($Key, $SessionVariable)) {
+                if (isset($SessionVariable[$Key])) {
                     return $this->getGlobalVariable($Key);
                 }
             } else {
                 $PHP_SessionID   = $this->PHP_SessionID;
                 $SessionVariable = &$this->SessionVariables;
-                if (array_key_exists($Key, $SessionVariable)) {
+                if (isset($SessionVariable[$Key])) {
                     return $this->get($Key);
                 }
             }
@@ -410,7 +410,7 @@ class Session
 
         $this->readVariable($key, $Global);
 
-        if (array_key_exists($key, $this->SessionVariables) || array_key_exists($key, $this->globalSessionVariables)) {
+        if (isset($this->SessionVariables[$key]) || isset($this->globalSessionVariables[$key])) {
             return false;
         } else {
             return true;

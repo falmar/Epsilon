@@ -38,7 +38,7 @@ class Output
     {
         if (is_array($Var) || is_object($Var)) {
             foreach ($Var as $k => $v) {
-                if (array_key_exists($k, $ClearArrayKeys)) {
+                if (isset($ClearArrayKeys[$k])) {
                     self::cleanValueByType($Var[$k], $ClearArrayKeys[$k]);
                 } else {
                     self::cleanValueByType($Var[$k], $ClearingMethod);

@@ -47,7 +47,7 @@ class Rules extends Object
      */
     public function allowed($Action, $Identity)
     {
-        if (array_key_exists($Action, $this->Actions)) {
+        if (isset($this->Actions[$Action])) {
             /** @var Rule $Rule */
             $Rule = $this->Actions[$Action];
 
@@ -63,7 +63,7 @@ class Rules extends Object
      */
     public function mergeAction($Action, $Identities)
     {
-        if (array_key_exists($Action, $this->Actions)) {
+        if (isset($this->Actions[$Action])) {
             /** @var $Rule Rule */
             $Rule = $this->Actions[$Action];
             $Rule->mergeIdentities($Identities);

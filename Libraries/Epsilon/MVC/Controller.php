@@ -203,7 +203,7 @@ abstract class Controller extends ActiveRecord
     public function getParam($Key)
     {
         $Params = $this->getParams();
-        if (is_array($Params) && array_key_exists($Key, $Params)) {
+        if (isset($Params[$Key])) {
             return $Params[$Key];
         } else {
             return null;
