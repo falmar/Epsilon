@@ -54,7 +54,7 @@ abstract class Router extends Object
         if (!isset(self::$Instance)) {
             $Class = "\\App\\{$ApplicationID}Router";
             if (!class_exists($Class)) {
-                Factory::getLogger()->emergency("RouterException: Can't read Router: {Router}", [
+                Factory::getLogger()->emergency('RouterException: Can\'t read Router: {Router}', [
                     'Router' => $ApplicationID . 'Router'
                 ]);
             }
@@ -178,7 +178,7 @@ abstract class Router extends Object
             }
 
             if (!$this->Route) {
-                Factory::getLogger()->emergency("Can't Route Application exiting...");
+                Factory::getLogger()->emergency('Can\'t Route Application exiting...');
             }
         }
     }
@@ -272,9 +272,9 @@ abstract class Router extends Object
 
         foreach ($arQuery as $Key => $Value) {
             if (!$Query && Config::PRETTY_URL) {
-                $Query = "?" . $Key . "=" . $Value;
+                $Query = '?' . $Key . '=' . $Value;
             } else {
-                $Query = "&" . $Key . "=" . $Value;
+                $Query = '&' . $Key . '=' . $Value;
             }
         }
 
@@ -295,13 +295,13 @@ abstract class Router extends Object
         if (!isset($this->CurrentMenuID)) {
             $dbh           = Factory::getDBH();
             $App           = Factory::getApplication();
-            $ComponentID   = $App->get("Component")->get("ID");
+            $ComponentID   = $App->get('Component')->get('ID');
             $ApplicationID = $App->getApplicationID();
             $URL           = $this->getRouteString();
 
-            $ssql = "SELECT m.MenuID AS MenuID FROM Menu m
+            $ssql = 'SELECT m.MenuID AS MenuID FROM Menu m
 					INNER JOIN MenuBundle mb ON mb.MenuBundleID = m.MenuBundleID
-					WHERE mb.ApplicationID = :AppID AND m.ComponentID = :ComponentID AND m.URL LIKE :URL";
+					WHERE mb.ApplicationID = :AppID AND m.ComponentID = :ComponentID AND m.URL LIKE :URL';
 
             $stmt = $dbh->prepare($ssql);
 
@@ -310,11 +310,14 @@ abstract class Router extends Object
                 $stmt->execute();
                 $stmt->fetch();
 
-                if (count(array_filter(explode("/", $URL))) == 5 && $stmt->rowCount() <= 0) {
+                $sections = count(array_filter(explode('/', $URL)));
 
-                    $URL = explode("/", $URL);
+                if ($sections == 5 && !$stmt->rowCount()) {
+
+                    $URL = explode('/', $URL);
                     array_pop($URL);
-                    $URL = implode("/", $URL) . "/";
+                    $sections--;
+                    $URL = implode('/', $URL) . '/';
 
                     $stmt = $dbh->prepare($ssql);
                     $this->bindMenuValues($stmt, $ApplicationID, $ComponentID, $URL, $MenuID);
@@ -322,11 +325,11 @@ abstract class Router extends Object
 
                 }
 
-                if (count(array_filter(explode("/", $URL))) == 4 && $stmt->rowCount() <= 0) {
+                if ($sections == 4 && !$stmt->rowCount()) {
 
-                    $URL = explode("/", $URL);
+                    $URL = explode('/', $URL);
                     array_pop($URL);
-                    $URL = implode("/", $URL) . "/";
+                    $URL = implode('/', $URL) . '/';
 
                     $stmt = $dbh->prepare($ssql);
                     $this->bindMenuValues($stmt, $ApplicationID, $ComponentID, $URL, $MenuID);
@@ -355,9 +358,9 @@ abstract class Router extends Object
      */
     public function bindMenuValues($stmt, $AppID, $ComponentID, $URL, & $MenuID)
     {
-        $stmt->bindValue(":AppID", $AppID, PDO::PARAM_STR);
-        $stmt->bindValue(":ComponentID", $ComponentID, PDO::PARAM_STR);
-        $stmt->bindValue(":URL", "%$URL", PDO::PARAM_STR);
-        $stmt->bindColumn("MenuID", $MenuID, PDO::PARAM_INT);
+        $stmt->bindValue(':AppID', $AppID, PDO::PARAM_STR);
+        $stmt->bindValue(':ComponentID', $ComponentID, PDO::PARAM_STR);
+        $stmt->bindValue(':URL', "%$URL", PDO::PARAM_STR);
+        $stmt->bindColumn('MenuID', $MenuID, PDO::PARAM_INT);
     }
 }
