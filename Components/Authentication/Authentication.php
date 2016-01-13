@@ -41,7 +41,7 @@ class Authentication extends Component
                 ]
             ],
             'Controllers' => [
-                ['name' => 'Authentication', 'default' => 1],
+                'Site'
             ]
         ];
     }

@@ -33,7 +33,7 @@ class Site extends Component
     {
         return [
             'Controllers' => [
-                ['name' => 'Site', 'default' => 1]
+                'Site'
             ]
         ];
     }

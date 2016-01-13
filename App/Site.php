@@ -30,6 +30,6 @@ class Site extends Application
 
     public function redirectHome()
     {
-        $this->redirect('Home/Index');
+        $this->redirect('Site/Index');
     }
 }
