@@ -18,6 +18,7 @@ use Epsilon\Factory;
 use Epsilon\Object\Object;
 use Epsilon\Component\Manager as ComponentManager;
 use Epsilon\Module\Manager as ModuleManager;
+use Epsilon\Utility\Utility;
 
 /**
  * Class Application
@@ -37,6 +38,8 @@ abstract class Application extends Object
     protected        $CLIMode;
     /** @var \Epsilon\Object\Object $CLIOptions */
     protected $CLIOptions;
+
+    protected $RelativePath;
 
     /**
      * @return void
@@ -78,7 +81,7 @@ abstract class Application extends Object
     /**
      * Return an Application Object According to the ApplicationID located in 'App/' folder
      *
-*@param string $ApplicationID
+     * @param string $ApplicationID
      * @return Application
      */
     public static function getInstance($ApplicationID)
@@ -229,5 +232,14 @@ abstract class Application extends Object
     public function getCLIOption($Key)
     {
         return $this->CLIOptions->get($Key);
+    }
+
+    public function getRelativePath()
+    {
+        if (!$this->RelativePath) {
+            $this->RelativePath = Utility::getRelativePath(EPSILON_PATH);
+        }
+
+        return $this->RelativePath;
     }
 }
