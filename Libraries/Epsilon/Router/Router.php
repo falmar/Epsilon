@@ -301,7 +301,7 @@ abstract class Router extends Object
 
             $ssql = 'SELECT m.MenuID AS MenuID FROM Menu m
 					INNER JOIN MenuBundle mb ON mb.MenuBundleID = m.MenuBundleID
-					WHERE mb.ApplicationID = :AppID AND m.ComponentID = :ComponentID AND m.URL LIKE :URL';
+					WHERE (mb.ApplicationID = :AppID AND m.URL LIKE :URL) OR m.ComponentID = :ComponentID';
 
             $stmt = $dbh->prepare($ssql);
 
