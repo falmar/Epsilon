@@ -15,7 +15,7 @@ defined('EPSILON_EXEC') or die();
 use App\Config;
 use Epsilon\Factory;
 
-require_once(LIBRARY_PATH . 'autoload.php');
+require_once(LIBRARY_PATH . 'Epsilon' . DS . 'autoload.php');
 
 date_default_timezone_set(Config::TIMEZONE);
 ini_set('default_charset', Config::CHARSET);
