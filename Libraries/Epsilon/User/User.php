@@ -326,14 +326,14 @@ class User extends ActiveRecord
         }
     }
 
-    public function __destruct()
+    public function markForDeletion($ForceDeletion = false)
     {
-        if ($this->blForDeletion && $this->get('ID') == Factory::getUser()->get('ID')) {
+        if ($this->get('ID') == Factory::getUser()->get('ID')) {
             throw new PDOException('Cannot Delete User if current session active');
-        } elseif ($this->blForDeletion) {
+        } else {
             $this->deleteUserGroupMap();
         }
 
-        parent::__destruct();
+        parent::markForDeletion($ForceDeletion);
     }
 }

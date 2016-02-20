@@ -64,7 +64,7 @@ abstract class ActiveRecord
      * arRelationMap contain the properties|fields of the database table directly related by ForeignKey
      * which are 'read only' by ActiveRecord
      *
-*@var array $arRelationMap
+     * @var array $arRelationMap
      */
     protected $arRelationMap;
 
@@ -564,9 +564,8 @@ abstract class ActiveRecord
      */
     public function markForDeletion($ForceDeletion = false)
     {
-
-        $this->set('blForDeletion', 1);
-        $this->set('blForceDeletion', $ForceDeletion);
+        $this->blForDeletion   = true;
+        $this->blForceDeletion = $ForceDeletion;
 
         if ($ForceDeletion) {
             $this->__destruct();
