@@ -187,7 +187,7 @@ abstract class ActiveRecord
                     $tableAlias = $Value[2];
                     $arMap      = $Value[4];
                     foreach ($arMap as $k => $v) {
-                        $ssql .= $tableAlias . '.' . $k . ' as $v,';
+                        $ssql .= $tableAlias . '.' . $k . " AS $v,";
                     }
                 } else {
                     $ssql .= $this->getTableNameAlias() . '.' . $Key . ',';
